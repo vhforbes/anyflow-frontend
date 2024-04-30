@@ -19,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${RedHatDisplay.className} w-screen`}>{children}</body>
+      <body
+        className={`${RedHatDisplay.className} w-screen bg-base-300 h-screen`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
