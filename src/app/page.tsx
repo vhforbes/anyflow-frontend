@@ -1,13 +1,35 @@
-import TestAtomComp from "@/components/01-atoms/TestAtomComponent";
 import Layout from "@/components/04-layouts/Layout";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <Layout>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <div className="text-2xl text-primary">Home Page</div>
-        <div className="btn btn-secondary">button</div>
-        <TestAtomComp />
+      <main className="animated-background h-screen bg-gradient-to-br from-base-100 via-base-200  to-base-300">
+        <div className="flex flex-col md:flex-row justify-evenly p-8">
+          <div className="md:mr-8">
+            <Image
+              width={800}
+              height={800}
+              src={"/anyflow-image-temp.png"}
+              alt="image with anyflow logo"
+            />
+          </div>
+          <div className="flex flex-col justify-around max-w-80">
+            <h1 className="text-4xl font-black">Stricking Title!</h1>
+            <p>
+              We bet you have grown tired of deploying on 10 different chains,
+              having to use only your command line...
+              <br />
+              <br />
+              We're here to help you! Deploy on any of our XX supported chains
+              with a seamless integration with your github repo!
+            </p>
+            <button className="btn btn-primary max-w-40">Start now!</button>
+          </div>
+        </div>
+        <div className="bg-secondary h-24 text-base-300">
+          Rectangle with supported chains logos
+        </div>
       </main>
     </Layout>
   );

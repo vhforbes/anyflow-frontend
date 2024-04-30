@@ -5,10 +5,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       {/* <Navbar /> */}
-      <main>
-        <h1>Test Layout</h1>
-        {children}
-      </main>
+      <div className="text-center h-20 bg-blue-600">Heahder here</div>
+      <main>{children}</main>
+      <div className="fixed bottom-0 w-full text-center h-24 bg-blue-900">
+        Footer here
+      </div>
       {/* <Footer /> */}
     </>
   );
