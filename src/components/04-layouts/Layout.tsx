@@ -1,16 +1,16 @@
-// import Navbar from './navbar'
-// import Footer from './footer'
+import "../../app/bg.css";
+import HeaderComponent from "../03-organisms/Header";
+import FooterComponent from "../03-organisms/Footer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* <Navbar /> */}
-      <div className="text-center h-20 bg-blue-600">Heahder here</div>
-      <main>{children}</main>
-      <div className="fixed bottom-0 w-full text-center h-24 bg-blue-900">
-        Footer here
+      <div className="flex flex-col min-h-screen">
+        <HeaderComponent />
+        <div className="bottom-0 left-0 w-full h-full fixed top-0 pattern"></div>
+        <main className="flex-grow bg-base-200 bg-opacity-95">{children}</main>
+        <FooterComponent />
       </div>
-      {/* <Footer /> */}
     </>
   );
 }
