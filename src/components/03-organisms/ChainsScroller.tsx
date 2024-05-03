@@ -1,11 +1,16 @@
 const ChainsScrollerComponent = () => {
   return (
-    <div className="flex justify-between items-center bg-base-100 px-10 h-20">
-      <div>Logo1</div>
-      <div>Logo2</div>
-      <div>Logo3</div>
-      <div>Logo4</div>
-      <div>Logo5</div>
+    <div className="carousel carousel-center rounded-box flex justify-around bg-base-300 h-24 p-4 bg-opacity-90">
+      {/* Create a logo molecule or atom */}
+      <div className="carousel-item w-7">
+        <p>Logo 1</p>
+      </div>
+      <div className="carousel-item w-7">
+        <p>Logo 2</p>
+      </div>
+      <div className="carousel-item w-7">
+        <p>Logo 3</p>
+      </div>
     </div>
   );
 };

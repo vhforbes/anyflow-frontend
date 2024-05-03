@@ -1,5 +1,4 @@
 "use client";
-import TestAtomComp from "@/components/01-atoms/TestAtomComponent";
 import api, { awaitForCsrfCookie } from "@/utils/axios";
 import axios from "axios";
 import { redirect } from "next/dist/server/api-utils";
@@ -11,7 +10,7 @@ const AuthPage = () => {
     console.log("Starting auth");
 
     const params = {
-      redirect_to: "https://app-staging.anyflow.pro/",
+      redirect_to: window.location.href,
     };
 
     const url = api.getUri() + "/oauth/github/authorize";
@@ -44,8 +43,8 @@ const AuthPage = () => {
   };
 
   useEffect(() => {
-    checkAuth();
-    // getUser();
+    // checkAuth();
+    getUser();
   }, []);
 
   return (
