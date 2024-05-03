@@ -1,4 +1,3 @@
-"use client";
 import api, { awaitForCsrfCookie } from "@/utils/axios";
 import axios from "axios";
 import { redirect } from "next/dist/server/api-utils";
@@ -42,17 +41,15 @@ const AuthPage = () => {
     }
   };
 
-  useEffect(() => {
-    // checkAuth();
-    getUser();
-  }, []);
+  // useEffect(() => {
+  //   // checkAuth();
+  //   getUser();
+  // }, []);
 
   return (
     <div className="text-3xl">
-      <button onClick={authGitHub}>Github login</button>
-      <br />
-      <br />
-      <button onClick={checkAuth}>Check login</button>
+      {/* <button>Github login</button>
+      <button>Check login</button> */}
     </div>
   );
 };

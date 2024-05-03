@@ -1,0 +1,22 @@
+GET|HEAD   / .................................................................................................................................................................... 
+  POST       _ignition/execute-solution ............................................................. ignition.executeSolution › Spatie\LaravelIgnition › ExecuteSolutionController
+  GET|HEAD   _ignition/health-check ......................................................................... ignition.healthCheck › Spatie\LaravelIgnition › HealthCheckController
+  POST       _ignition/update-config ...................................................................... ignition.updateConfig › Spatie\LaravelIgnition › UpdateConfigController
+  GET|HEAD   api/deployments ....................................................................................................... deployments.index › DeploymentController@index
+  POST       api/deployments ....................................................................................................... deployments.store › DeploymentController@store
+  GET|HEAD   api/deployments/{deployment} ............................................................................................ deployments.show › DeploymentController@show
+  GET|HEAD   api/oauth/github/check ................................................................................................................... GithubOAuthController@check
+  GET|HEAD   api/organizations ................................................................................................. organizations.index › OrganizationController@index
+  GET|HEAD   api/organizations/{organization} .................................................................................... organizations.show › OrganizationController@show
+  GET|HEAD   api/organizations/{organization}/repositories .................................................................................... OrganizationController@repositories
+  GET|HEAD   api/repositories ..................................................................................................... repositories.index › RepositoryController@index
+  GET|HEAD   api/repositories/{repository} .......................................................................................... repositories.show › RepositoryController@show
+  GET|HEAD   api/repositories/{repository}/configs ................................................................................................... RepositoryController@configs
+  POST       api/rpc-proxy/{chainId} ........................................................................................................................... RpcProxyController
+  GET|HEAD   api/test-cookie ...................................................................................................................................................... 
+  GET|HEAD   api/user ............................................................................................................................................................. 
+  GET|HEAD   auth/logout .................................................................................................................................... AuthController@logout
+  GET|HEAD   oauth/github/authorize ............................................................................................................... GithubOAuthController@authorize
+  GET|HEAD   oauth/github/callback ................................................................................................................. GithubOAuthController@callback
+  GET|HEAD   sanctum/csrf-cookie ................................................................................ sanctum.csrf-cookie › Laravel\Sanctum › CsrfCookieController@show
+  GET|HEAD   up ...................................................................................................................................................................
