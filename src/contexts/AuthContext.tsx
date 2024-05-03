@@ -34,6 +34,8 @@ export const AuthContextWrapper = ({ children }: { children: ReactNode }) => {
       try {
         const userData = await getUserAuthData();
 
+        console.log("Setting userData state");
+
         if (userData) {
           setUserInfo({
             email: userData?.email,
@@ -46,12 +48,12 @@ export const AuthContextWrapper = ({ children }: { children: ReactNode }) => {
     };
 
     const checkUserIsAuthenticated = async () => {
-      setIsAuthenticated(await checkAuthState());
+      if (!isAuthenticated) setIsAuthenticated(await checkAuthState());
     };
 
-    const localAuthState = localStorage.getItem("authState");
+    const localUserInfo = localStorage.getItem("userInfo");
 
-    if (!localAuthState || !isAuthenticated) {
+    if (!localUserInfo) {
       getUserData();
     }
 
