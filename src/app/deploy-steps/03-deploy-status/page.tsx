@@ -5,7 +5,7 @@ const DeployStatusPage = () => {
     <div className="text-center">
       <p>Deploy Status</p>
       <button className="btn btn-secondary">
-        <Link href="/deploy-steps/01-code-provider">
+        <Link href="/deploy-steps/02-deploy-settings">
           Step 2 Deploy Settings
         </Link>
       </button>

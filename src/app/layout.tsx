@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/04-layouts/Layout";
+import App from "./app";
 
 const RedHatDisplay = Red_Hat_Display({
   subsets: ["latin"],
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={RedHatDisplay.className}>
-        <Layout>{children}</Layout>
+        <App>
+          <Layout>{children}</Layout>
+        </App>
       </body>
     </html>
   );
