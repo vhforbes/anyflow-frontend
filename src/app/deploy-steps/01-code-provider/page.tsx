@@ -92,6 +92,27 @@ const CodeProviderPage = () => {
     if (repositoryToSelect) setSelectedRepository(repositoryToSelect);
   };
 
+  // Where and why i need the single repo data?
+  // To select the branch
+  // Use the same searcheable thing will be nice
+  const getSingleRepo = async () => {
+    try {
+      startLoading();
+      // Can this be a function that also acceps parameters?
+
+      // /api/repositories/778875954/configs?repositoryRoot=
+      const { data: repository }: { data: any } = await api.get(
+        "/api/repositories/778875954"
+      );
+
+      console.log(repository);
+
+      stopLoading();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     if (Object.keys(userInfo).length) {
       getOrganizations();
@@ -100,6 +121,7 @@ const CodeProviderPage = () => {
 
   useEffect(() => {
     getRepositories();
+    getSingleRepo();
   }, [selectedOrganization]);
 
   return (
