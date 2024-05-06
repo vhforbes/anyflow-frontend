@@ -1,6 +1,8 @@
 "use client";
 import { useAuth } from "@/hooks/useAuth";
+import useLoader from "@/hooks/useLoader";
 import { on } from "events";
+import { useRouter } from "next/navigation";
 import {
   ReactNode,
   createContext,
@@ -21,48 +23,45 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export const AuthContextWrapper = ({ children }: { children: ReactNode }) => {
+export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [userInfo, setUserInfo] = useState<UserInfoType>({} as UserInfoType);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
     false
   );
 
   const { checkAuthState, getUserAuthData } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     const getUserData = async () => {
-      try {
-        const userData = await getUserAuthData();
+      const authState = await checkAuthState();
 
-        if (userData) {
-          setUserInfo({
-            email: userData?.email,
-            name: userData?.name,
-          });
-        }
-      } catch (error) {
-        console.error(error);
+      setIsAuthenticated(authState);
+
+      if (!authState) router.push("/login");
+
+      const localUserInfo = localStorage.getItem("userInfo");
+
+      if (localUserInfo !== "undefined" && authState) {
+        console.log("Entering log");
+        setUserInfo(JSON.parse(localUserInfo as string));
+        return;
+      }
+
+      const userData = await getUserAuthData();
+
+      localStorage.setItem("userInfo", JSON.stringify(userData));
+
+      if (userData) {
+        setUserInfo({
+          email: userData?.email,
+          name: userData?.name,
+        });
       }
     };
 
-    const checkUserIsAuthenticated = async () => {
-      if (!isAuthenticated) setIsAuthenticated(await checkAuthState());
-    };
-
-    const localUserInfo = JSON.parse(
-      localStorage.getItem("userInfo") as string
-    );
-
-    if (!Object.keys(localUserInfo).length) {
-      getUserData();
-    }
-
-    checkUserIsAuthenticated();
+    getUserData();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("userInfo", JSON.stringify(userInfo));
-  }, [userInfo, isAuthenticated]);
 
   return (
     <AuthContext.Provider

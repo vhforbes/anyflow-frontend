@@ -49,7 +49,6 @@ export const useAuth = () => {
       );
 
       stopLoading();
-
       return data.isAuthenticated;
     } catch (error) {
       console.error(error);

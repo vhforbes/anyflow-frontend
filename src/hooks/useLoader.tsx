@@ -1,15 +1,7 @@
-import { useState } from "react";
+import { useLoaderContext } from "@/contexts/LoaderContext";
 
 const useLoader = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const startLoading = () => {
-    setIsLoading(true);
-  };
-
-  const stopLoading = () => {
-    setIsLoading(false);
-  };
+  const { isLoading, startLoading, stopLoading } = useLoaderContext();
 
   return {
     isLoading,
