@@ -13,8 +13,6 @@ const AuthPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(isAuthenticated);
-
     if (isAuthenticated) {
       router.push("/deploy-steps/01-code-provider");
     }

@@ -1,4 +1,7 @@
 import api from "@/utils/axios";
+import useLoader from "./useLoader";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 type userAuthData = {
   id: number;
@@ -14,7 +17,15 @@ type checkAuthData = {
 };
 
 export const useAuth = () => {
+  const { startLoading, stopLoading } = useLoader();
+  const { isAuthenticated } = useAuthContext();
+  const router = useRouter();
+
   const authUser = async () => {
+    if (isAuthenticated) {
+      router.push("/login");
+    }
+
     const params = {
       redirect_to: window.location.href,
     };
@@ -25,22 +36,24 @@ export const useAuth = () => {
   };
 
   const logOut = async () => {
-    try {
-      localStorage.removeItem("userInfo");
-      const url = api.getUri() + "/auth/logout";
-      window.location.href = url;
-    } catch (error) {}
+    localStorage.removeItem("userInfo");
+    const url = api.getUri() + "/auth/logout";
+    window.location.href = url;
   };
 
   const checkAuthState = async () => {
     try {
+      startLoading();
       const { data }: { data: checkAuthData } = await api.get(
         "/api/oauth/github/check"
       );
 
+      stopLoading();
+
       return data.isAuthenticated;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      stopLoading();
     }
   };
 
@@ -50,7 +63,7 @@ export const useAuth = () => {
 
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
