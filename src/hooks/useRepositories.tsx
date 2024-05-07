@@ -46,7 +46,8 @@ const useGithub = () => {
   }, [selectedOrganization]);
 
   useEffect(() => {
-    getSingleRepoConfigs({ id: selectedRepository.id });
+    if (selectedRepository.id)
+      getSingleRepoConfigs({ id: selectedRepository.id });
   }, [source]);
 
   const getOrganizations = async () => {

@@ -65,6 +65,7 @@ const DynamicSearchBar: React.FC<Props> = ({
   );
 
   const handleSelection = (data: any) => {
+    // !!!! CLOSE WHEN CLICKING !!!!
     setOnClick?.(data.id);
     setSearchTerm(data.name);
   };
