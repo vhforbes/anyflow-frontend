@@ -1,16 +1,30 @@
-import { Repository } from "@/interfaces/github";
+import { Repository } from "@/interfaces/repositoriesInterface";
 import { useEffect, useRef, useState } from "react";
 
 interface Props {
-  data: Repository[];
-  setterCallback: (id: number) => void;
+  data: {
+    id: any;
+    name: string;
+  }[];
+  placeholder: string;
+  className?: string;
+  disabled?: boolean;
+  setOnClick?: (id: any) => void;
+  setOnChange?: (name: string) => void;
 }
 
 const DynamicSearchBar: React.FC<Props> = ({
-  data: repositories,
-  setterCallback,
+  data,
+  placeholder,
+  className,
+  setOnClick,
+  setOnChange,
+  disabled = false,
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
+  const TIME_ELAPSED = 1000;
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isOpened, setIsOpened] = useState(false);
 
   // Maybe create a reusable hook of the click outside for other use cases?
   useEffect(() => {
@@ -29,38 +43,44 @@ const DynamicSearchBar: React.FC<Props> = ({
     };
   }, []);
 
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setOnChange?.(searchTerm);
+    }, TIME_ELAPSED);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
   /* 
     Some todos
     [] implement keyabord functionality (arrow up, down and enter)
     */
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [isOpened, setIsOpened] = useState(false);
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredData = repositories.filter((repository: Repository) =>
-    repository.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = data.filter((data) =>
+    data.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSelection = (repository: Repository) => {
-    setterCallback(repository.id);
-    setSearchTerm(repository.name);
+  const handleSelection = (data: any) => {
+    setOnClick?.(data.id);
+    setSearchTerm(data.name);
   };
 
   return (
     <div ref={elementRef}>
       <input
-        className="input input-bordered w-full max-w-xs"
+        className={`input input-bordered w-full max-w-xs ${className}`}
         type="text"
-        placeholder="Search..."
+        placeholder={placeholder}
         value={searchTerm}
         onChange={handleInputChange}
         onClick={() => setIsOpened(true)}
+        disabled={disabled}
       />
-      {filteredData.length > 1 && isOpened ? (
+      {filteredData.length > 0 && isOpened ? (
         <ul className="p-2 absolute shadow menu dropdown-content z-[1] bg-base-100 rounded-md mt-2 max-w-xs text-base">
           {filteredData.slice(0, 5).map((repository: Repository) => (
             <li

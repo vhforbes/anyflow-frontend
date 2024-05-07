@@ -10,3 +10,12 @@ export interface Repository {
   id: number;
   name: string;
 }
+
+export interface Branch {
+  name: string;
+}
+
+export interface RepositoryConfigs {
+  name: string;
+  framework: string;
+}
