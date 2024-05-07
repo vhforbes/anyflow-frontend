@@ -117,13 +117,13 @@ const CodeProviderPage = () => {
           )}
         </div>
 
-        <div className="min-w-64  mt-6">
+        <div className="min-w-64  mt-6 mb-6">
           <button
             className="btn btn-secondary w-full"
             disabled={!repositoryConfigs.framework?.includes("hardhat")}
           >
             <Link href="/deploy-steps/02-deploy-settings ">
-              Step 2 Deploy Settings
+              Step 2: Deploy Settings
             </Link>
           </button>
         </div>
