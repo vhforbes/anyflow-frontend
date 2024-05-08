@@ -51,7 +51,6 @@ const useDeploy = () => {
   const [verifyAllChecked, setVerifyAllChecked] = useState(false);
 
   useEffect(() => {
-    // length dos contratos com true === lengh dos estimateContractTotalGas, setar verifyall
     const allVerifyChecked = selectedChains.filter(
       (chain) => chain.verifyContracts
     );
