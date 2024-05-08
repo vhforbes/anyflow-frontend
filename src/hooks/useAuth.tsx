@@ -2,6 +2,7 @@ import api from "@/utils/axios";
 import useLoader from "./useLoader";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type userAuthData = {
   id: number;
@@ -22,10 +23,6 @@ export const useAuth = () => {
   const router = useRouter();
 
   const authUser = async () => {
-    if (isAuthenticated) {
-      router.push("/login");
-    }
-
     const params = {
       redirect_to: window.location.href,
     };

@@ -8,6 +8,7 @@ import {
   Repository,
   RepositoryConfigs,
 } from "@/interfaces/repositoriesInterface";
+import toast from "react-hot-toast";
 
 interface RepositoryResponse {
   branches: Branch[];
@@ -83,9 +84,10 @@ const useGithub = () => {
 
         return;
       }
-
-      // const { data: repositoriesResponse } = api.get(`/api/organizations/${organization.value.login}/repositories`)
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+      toast.error("Unable to fetch repositories");
+    }
   };
 
   // Where and why i need the single repo data?
@@ -102,6 +104,7 @@ const useGithub = () => {
       stopLoading();
       return repository;
     } catch (error) {
+      toast.error("Unable to fetch repository");
       console.error(error);
     }
   };

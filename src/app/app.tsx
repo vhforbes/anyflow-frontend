@@ -1,8 +1,6 @@
-import Loader from "@/components/01-atoms/Loader";
 import { AuthContextProvider } from "@/contexts/AuthContext";
 import { LoaderProvider } from "@/contexts/LoaderContext";
-import useLoader from "@/hooks/useLoader";
-import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 export default function App({
   children,
@@ -12,7 +10,30 @@ export default function App({
   return (
     <>
       <LoaderProvider>
-        <AuthContextProvider>{children}</AuthContextProvider>
+        <AuthContextProvider>
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+            gutter={8}
+            containerClassName=""
+            containerStyle={{}}
+            toastOptions={{
+              // Define default options
+              className: "bg-base-100",
+              duration: 30000,
+              style: {
+                background: "#313541",
+                color: "#fff",
+              },
+
+              // Default options for specific types
+              // success: {
+              //   duration: 3000,
+              // },
+            }}
+          />
+          {children}
+        </AuthContextProvider>
       </LoaderProvider>
     </>
   );

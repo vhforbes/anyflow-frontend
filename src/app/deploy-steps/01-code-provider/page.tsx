@@ -4,7 +4,8 @@ import DynamicSearchBar from "@/components/03-organisms/DynamicSearchBar";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import useRepositories from "@/hooks/useRepositories";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const CodeProviderPage = () => {
   const {
@@ -23,6 +24,11 @@ const CodeProviderPage = () => {
   } = useRepositories();
 
   const [customRoot, setCustomRoot] = useState(false);
+
+  useEffect(() => {
+    toast.error("Error message test");
+    toast.success("Success message test");
+  });
 
   return (
     <DeployStepsLayout currentStep={1}>
