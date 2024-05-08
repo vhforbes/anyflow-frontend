@@ -43,7 +43,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       const localUserInfo = localStorage.getItem("userInfo");
 
       if (localUserInfo !== "undefined" && authState) {
-        console.log("Entering log");
         setUserInfo(JSON.parse(localUserInfo as string));
         return;
       }

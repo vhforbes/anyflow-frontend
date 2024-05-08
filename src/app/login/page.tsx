@@ -4,7 +4,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
-import GitHubIcon from "../../icons/GitHubIcon";
+import GitHubIcon from "@/components/icons/GitHubIcon";
 import { useEffect } from "react";
 
 const AuthPage = () => {

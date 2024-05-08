@@ -15,7 +15,8 @@ interface RepositoryResponse {
   repository: Repository;
 }
 
-const useGithub = () => {
+// Will this data need to be shared as a context? How many compoenents do we expect to see it?
+const useRepositories = () => {
   const [organizations, setOrganizations] = useState([] as Organization[]);
   const [selectedOrganization, setSelectedOrganization] = useState(
     {} as Organization
@@ -33,6 +34,8 @@ const useGithub = () => {
 
   const [source, setSource] = useState("");
 
+  const [isHardhat, setIsHardhat] = useState(false);
+
   const { startLoading, stopLoading } = useLoader();
   const { userInfo } = useAuthContext();
 
@@ -49,7 +52,7 @@ const useGithub = () => {
   useEffect(() => {
     if (selectedRepository.id)
       getSingleRepoConfigs({ id: selectedRepository.id });
-  }, [source]);
+  }, [source, selectedBranch, selectedRepository]);
 
   const getOrganizations = async () => {
     try {
@@ -114,34 +117,38 @@ const useGithub = () => {
       startLoading();
       const params = {
         repositoryRoot: source,
+        branch: selectedBranch.name,
       };
 
-      const { data: repositoryConfigs }: { data: RepositoryConfigs } =
+      const { data: repositoryConfigsResponse }: { data: RepositoryConfigs } =
         await api.get(
           `/api/repositories/${id}/configs?` + new URLSearchParams(params)
         );
 
-      stopLoading();
+      const includesHardhat =
+        repositoryConfigsResponse.framework &&
+        repositoryConfigsResponse.framework.includes("hardhat");
 
-      return repositoryConfigs;
+      includesHardhat ? setIsHardhat(true) : setIsHardhat(false);
+
+      stopLoading();
+      return repositoryConfigsResponse;
     } catch (error) {
+      toast.error("Unable to get repository");
       stopLoading();
     }
   };
 
   // Can this handle changes be abstracted into a single function?
+  // This logic should be monstly inside hooks
   const handleRepositoryChange = async (targetId: number) => {
     const repositoryToSelect = await getSingleRepoData({ id: targetId });
-    const repositoryToSetConfigs = await getSingleRepoConfigs({ id: targetId });
-
-    console.log(repositoryToSetConfigs);
 
     if (repositoryToSelect) {
       setSelectedRepository(repositoryToSelect.repository);
       setBranches(repositoryToSelect.branches);
+      setSelectedBranch(repositoryToSelect.branches[0]);
     }
-
-    if (repositoryToSetConfigs) setRepositoryConfigs(repositoryToSetConfigs);
   };
 
   const handleOrganizationChange = (targetId: number) => {
@@ -161,7 +168,6 @@ const useGithub = () => {
   return {
     organizations,
     selectedOrganization,
-    getOrganizations,
     repositories,
     selectedRepository,
     repositoryConfigs,
@@ -169,6 +175,11 @@ const useGithub = () => {
     selectedBranch,
     source,
     setSource,
+    isHardhat,
+    setIsHardhat,
+
+    // Api calls and handlers
+    getOrganizations,
     getRepositories,
     getSingleRepoData,
     handleOrganizationChange,
@@ -177,4 +188,4 @@ const useGithub = () => {
   };
 };
 
-export default useGithub;
+export default useRepositories;

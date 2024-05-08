@@ -30,7 +30,6 @@ axios.interceptors.response.use((response) => {
 // Sets up the CSRF token for the first time
 const csrfTokenPromise = new Promise((resolve) => {
   api.get("/sanctum/csrf-cookie").then((response) => {
-    console.log("CSRF cookie set!");
     resolve(response);
   });
 });

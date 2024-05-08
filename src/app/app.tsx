@@ -20,7 +20,7 @@ export default function App({
             toastOptions={{
               // Define default options
               className: "bg-base-100",
-              duration: 30000,
+              duration: 2000,
               style: {
                 background: "#313541",
                 color: "#fff",

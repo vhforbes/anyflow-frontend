@@ -4,8 +4,7 @@ import DynamicSearchBar from "@/components/03-organisms/DynamicSearchBar";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import useRepositories from "@/hooks/useRepositories";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 
 const CodeProviderPage = () => {
   const {
@@ -15,20 +14,14 @@ const CodeProviderPage = () => {
     branches,
     selectedBranch,
     selectedRepository,
-    repositoryConfigs,
-    source,
     setSource,
+    isHardhat,
     handleOrganizationChange,
     handleRepositoryChange,
     handleBranchChange,
   } = useRepositories();
 
   const [customRoot, setCustomRoot] = useState(false);
-
-  useEffect(() => {
-    toast.error("Error message test");
-    toast.success("Success message test");
-  });
 
   return (
     <DeployStepsLayout currentStep={1}>
@@ -112,7 +105,7 @@ const CodeProviderPage = () => {
         </div>
 
         <div className="text-center text-base-300 font-extrabold  mt-6">
-          {repositoryConfigs.framework?.includes("hardhat") ? (
+          {isHardhat ? (
             <div className="min-w-64 bg-primary  p-4">
               <p>Hardhat Detected!</p>
             </div>
@@ -124,10 +117,7 @@ const CodeProviderPage = () => {
         </div>
 
         <div className="min-w-64  mt-6 mb-6">
-          <button
-            className="btn btn-secondary w-full"
-            disabled={!repositoryConfigs.framework?.includes("hardhat")}
-          >
+          <button className="btn btn-secondary w-full" disabled={!isHardhat}>
             <Link href="/deploy-steps/02-deploy-settings ">
               Step 2: Deploy Settings
             </Link>
