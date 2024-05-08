@@ -9,8 +9,12 @@ const DeploySettingsPage = () => {
   const {
     chanisList,
     selectedChains,
+    verifyAllChecked,
+    setGlobalEnvVariables,
     handleSelectAll,
-    handleChainCheckboxChange,
+    handlevalidateAllClick,
+    handleChainSelection,
+    handleSelectedChainSettingsChange,
   } = useDeploy();
 
   const isSelected = (chain: Chain) => {
@@ -52,7 +56,7 @@ const DeploySettingsPage = () => {
                 key={chain.id}
                 className={`flex flex-grow justify-between mr-2 mt-2 border-neutral border-2 p-2 bg-base-100 bg-opacity-50 cursor-pointer hover:bg-opacity-90
                 ${isSelected(chain) ? "bg-base-300" : "bg-opacity-80"}`}
-                onClick={() => handleChainCheckboxChange(chain.id)}
+                onClick={() => handleChainSelection(chain.id)}
               >
                 <div className="flex mr-2 items-center">
                   <p className="mr-2">{chain.name}</p>
@@ -62,7 +66,7 @@ const DeploySettingsPage = () => {
                 <input
                   type="checkbox"
                   className="checkbox checked:checkbox-primary"
-                  onChange={() => handleChainCheckboxChange(chain.id)}
+                  onChange={() => handleChainSelection(chain.id)}
                   checked={isSelected(chain)}
                 />
               </div>
@@ -74,7 +78,7 @@ const DeploySettingsPage = () => {
 
         <div className="mt-10">
           <h2 className="text-2xl font-bold text-center">
-            Define your custom Environment Variables:
+            Define your custom settings:
           </h2>
 
           <div
@@ -86,9 +90,33 @@ const DeploySettingsPage = () => {
               Global environment variables
             </div>
             <div className="collapse-content h-fit">
-              <textarea className="textarea textarea-bordered w-full h-56" />
+              <textarea
+                onChange={(e) => setGlobalEnvVariables(e.target.value)}
+                className="textarea textarea-bordered w-full h-56"
+              />
             </div>
           </div>
+
+          <div className="flex justify-center mt-4">
+            <input
+              type="checkbox"
+              className="checkbox mr-2"
+              checked={verifyAllChecked}
+              onChange={handlevalidateAllClick}
+            />
+            <p>Verify all contracts source code: </p>
+          </div>
+
+          {/* 
+          
+            IF THIS IS SELECTED WHEN USER ADD NEW CONTRACT IT WILL COME DEFAULT TRUE
+            IF NOT SELETEC THE DEFAULT WILL BE FALSE
+            
+            WHEN USER CLICKS AND NOT CHECKED WILL SELECT ALL CONTRACTS
+
+            OTHERWISE WILL CLEAR ALL VERIFYS
+
+            */}
 
           {selectedChains.length > 0 ? (
             <h2 className="text-xl font-bold text-center mt-4">
@@ -111,7 +139,27 @@ const DeploySettingsPage = () => {
                   <textarea
                     className="textarea textarea-bordered w-full h-36"
                     placeholder="ENV_NAME=VALUE"
+                    onChange={(e) =>
+                      handleSelectedChainSettingsChange({
+                        id: chain.id,
+                        envValues: e.target.value,
+                      })
+                    }
                   />
+                  <div className="flex justify-center mt-4">
+                    <input
+                      type="checkbox"
+                      className="checkbox mr-2"
+                      checked={chain.verifyContracts}
+                      onChange={(e) =>
+                        handleSelectedChainSettingsChange({
+                          id: chain.id,
+                          verifyContracts: e.target.checked,
+                        })
+                      }
+                    />
+                    <p>Verify contracts source code</p>
+                  </div>
                 </div>
               </div>
             ))}

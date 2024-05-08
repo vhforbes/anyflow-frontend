@@ -1,3 +1,4 @@
+import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
 import { useEffect, useState } from "react";
 import {
   arbitrumSepolia,
@@ -17,8 +18,8 @@ import {
   zkSyncSepoliaTestnet,
   cronosTestnet,
   moonbeamDev,
-  Chain,
 } from "viem/chains";
+import { estimateContractTotalGas } from "viem/op-stack";
 
 const useDeploy = () => {
   const [chanisList, setChainsList] = useState([
@@ -41,26 +42,28 @@ const useDeploy = () => {
     moonbeamDev,
   ]);
 
-  const [selectedChains, setSelectedChains] = useState([
-    arbitrumSepolia,
-  ] as Chain[]);
+  const [selectedChains, setSelectedChains] = useState(
+    [] as ChainWithSettings[]
+  );
+
+  const [globalEnvVariables, setGlobalEnvVariables] = useState("");
+
+  const [verifyAllChecked, setVerifyAllChecked] = useState(false);
 
   useEffect(() => {
-    console.log(selectedChains);
+    // length dos contratos com true === lengh dos estimateContractTotalGas, setar verifyall
+    const allVerifyChecked = selectedChains.filter(
+      (chain) => chain.verifyContracts
+    );
+
+    if (allVerifyChecked.length === selectedChains.length) {
+      setVerifyAllChecked(true);
+    }
+
+    if (allVerifyChecked.length !== selectedChains.length) {
+      setVerifyAllChecked(false);
+    }
   }, [selectedChains]);
-
-  const handleChainCheckboxChange = (id: number) => {
-    const alreadySelected = selectedChains.find((item) => item.id === id);
-    const selectedChain = chanisList.filter((chain) => chain.id === id);
-
-    if (!alreadySelected && selectedChain) {
-      setSelectedChains([...selectedChains, selectedChain[0]]);
-    }
-
-    if (alreadySelected) {
-      setSelectedChains(selectedChains.filter((chain) => chain.id !== id));
-    }
-  };
 
   const handleSelectAll = () => {
     if (chanisList.length === selectedChains.length) {
@@ -70,11 +73,74 @@ const useDeploy = () => {
     }
   };
 
+  const handleChainSelection = (id: number) => {
+    const alreadySelected = selectedChains.find((item) => item.id === id);
+
+    const selectedChainToAdd = chanisList.filter(
+      (chain) => chain.id === id
+    )[0] as ChainWithSettings;
+
+    selectedChainToAdd.verifyContracts = verifyAllChecked;
+
+    if (!alreadySelected && selectedChainToAdd) {
+      setSelectedChains([...selectedChains, selectedChainToAdd]);
+    }
+
+    if (alreadySelected) {
+      setSelectedChains(selectedChains.filter((chain) => chain.id !== id));
+    }
+  };
+
+  const handleSelectedChainSettingsChange = ({
+    id,
+    envValues,
+    verifyContracts = false,
+  }: {
+    id: number;
+    envValues?: string;
+    verifyContracts?: boolean;
+  }) => {
+    const currentChainIndex = selectedChains.findIndex(
+      (chain) => chain.id === id
+    );
+    const updatedChain = Object.assign({}, selectedChains[currentChainIndex]);
+
+    if (envValues) updatedChain.envVariables = envValues;
+
+    // Only changes the verify in case it changed
+    if (verifyContracts !== updatedChain.verifyContracts) {
+      updatedChain.verifyContracts = verifyContracts;
+    }
+
+    const updatedSelectChains = selectedChains.slice();
+    updatedSelectChains[currentChainIndex] = updatedChain;
+
+    setSelectedChains(updatedSelectChains);
+  };
+
+  const handlevalidateAllClick = () => {
+    const newValidateAllChecked = !verifyAllChecked;
+
+    setVerifyAllChecked(newValidateAllChecked);
+
+    setSelectedChains(
+      selectedChains.map((chain) => ({
+        ...chain,
+        verifyContracts: newValidateAllChecked,
+      }))
+    );
+  };
+
   return {
     chanisList,
     selectedChains,
+    globalEnvVariables,
+    setGlobalEnvVariables,
+    verifyAllChecked,
+    handlevalidateAllClick,
     handleSelectAll,
-    handleChainCheckboxChange,
+    handleChainSelection,
+    handleSelectedChainSettingsChange,
   };
 };
 
