@@ -21,7 +21,7 @@ export default function Home() {
             having to use only your command line...
             <br />
             <br />
-            We're here to help you! Deploy on any of our XX supported chains
+            We`re here to help you! Deploy on any of our XX supported chains
             with a seamless integration with your github repo!
           </p>
           <button className="btn btn-primary max-w-40">Start now!</button>

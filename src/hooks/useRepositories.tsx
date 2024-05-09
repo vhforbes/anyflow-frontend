@@ -9,6 +9,7 @@ import {
   RepositoryConfigs,
 } from "@/interfaces/repositoriesInterface";
 import toast from "react-hot-toast";
+import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 
 interface RepositoryResponse {
   branches: Branch[];
@@ -38,6 +39,7 @@ const useRepositories = () => {
 
   const { startLoading, stopLoading } = useLoader();
   const { userInfo } = useAuthContext();
+  const { setCodeProviderStep } = useDeployStepsContext();
 
   useEffect(() => {
     if (Object.keys(userInfo).length) {
@@ -53,6 +55,23 @@ const useRepositories = () => {
     if (selectedRepository.id)
       getSingleRepoConfigs({ id: selectedRepository.id });
   }, [source, selectedBranch, selectedRepository]);
+
+  useEffect(() => {
+    setCodeProviderStep({
+      organization: selectedOrganization,
+      repository: selectedRepository,
+      branch: selectedBranch,
+      repositoryConfigs: repositoryConfigs,
+      source,
+    });
+  }, [
+    selectedOrganization,
+    selectedRepository,
+    selectedBranch,
+    repositoryConfigs,
+    source,
+    setCodeProviderStep,
+  ]);
 
   const getOrganizations = async () => {
     try {

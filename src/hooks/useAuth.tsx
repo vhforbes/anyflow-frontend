@@ -20,7 +20,6 @@ type checkAuthData = {
 export const useAuth = () => {
   const { startLoading, stopLoading } = useLoader();
   const { isAuthenticated } = useAuthContext();
-  const router = useRouter();
 
   const authUser = async () => {
     const params = {
