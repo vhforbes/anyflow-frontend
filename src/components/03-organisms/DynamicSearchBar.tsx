@@ -49,7 +49,7 @@ const DynamicSearchBar: React.FC<Props> = ({
     }, TIME_ELAPSED);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+  }, [searchTerm, setOnChange]);
 
   /* 
     Some todos

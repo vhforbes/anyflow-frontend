@@ -7,7 +7,7 @@ import {
   Organization,
   Repository,
   RepositoryConfigs,
-} from "@/interfaces/repositoriesInterface";
+} from "@/interfaces/RepositoriesInterface";
 import toast from "react-hot-toast";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 
@@ -41,7 +41,7 @@ const useRepositories = () => {
   const { userInfo } = useAuthContext();
   const { setCodeProviderStep } = useDeployStepsContext();
 
-  const getOrganizations = useCallback(() => {
+  const getOrganizations = useCallback(async () => {
     try {
       startLoading();
       const { data: organizationsResponse }: { data: Organization[] } =
@@ -62,7 +62,7 @@ const useRepositories = () => {
     }
   }, [startLoading, stopLoading, userInfo]);
 
-  const getRepositories = useCallback(() => {
+  const getRepositories = useCallback(async () => {
     try {
       // Im not a fan of this if, dont know why
       if (selectedOrganization.id === 0) {
@@ -131,7 +131,7 @@ const useRepositories = () => {
   );
 
   const handleRepositoryChange = useCallback(
-    (targetId: number) => {
+    async (targetId: number) => {
       const repositoryToSelect = await getSingleRepoData({ id: targetId });
 
       if (repositoryToSelect) {

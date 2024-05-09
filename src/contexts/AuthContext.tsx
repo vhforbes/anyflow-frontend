@@ -60,7 +60,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     };
 
     getUserData();
-  }, []);
+  }, [checkAuthState, getUserAuthData, router]);
 
   return (
     <AuthContext.Provider
