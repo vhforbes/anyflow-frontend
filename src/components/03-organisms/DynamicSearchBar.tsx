@@ -1,4 +1,4 @@
-import { Repository } from "@/interfaces/repositoriesInterface";
+import { Repository } from "@/interfaces/RepositoriesInterface";
 import { useEffect, useRef, useState } from "react";
 
 interface Props {

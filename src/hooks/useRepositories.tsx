@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useLoader from "./useLoader";
 import { useAuthContext } from "@/contexts/AuthContext";
 import api from "@/utils/axios";
@@ -41,39 +41,7 @@ const useRepositories = () => {
   const { userInfo } = useAuthContext();
   const { setCodeProviderStep } = useDeployStepsContext();
 
-  useEffect(() => {
-    if (Object.keys(userInfo).length) {
-      getOrganizations();
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    getRepositories();
-  }, [selectedOrganization]);
-
-  useEffect(() => {
-    if (selectedRepository.id)
-      getSingleRepoConfigs({ id: selectedRepository.id });
-  }, [source, selectedBranch, selectedRepository]);
-
-  useEffect(() => {
-    setCodeProviderStep({
-      organization: selectedOrganization,
-      repository: selectedRepository,
-      branch: selectedBranch,
-      repositoryConfigs: repositoryConfigs,
-      source,
-    });
-  }, [
-    selectedOrganization,
-    selectedRepository,
-    selectedBranch,
-    repositoryConfigs,
-    source,
-    setCodeProviderStep,
-  ]);
-
-  const getOrganizations = async () => {
+  const getOrganizations = useCallback(() => {
     try {
       startLoading();
       const { data: organizationsResponse }: { data: Organization[] } =
@@ -92,9 +60,9 @@ const useRepositories = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [startLoading, stopLoading, userInfo]);
 
-  const getRepositories = async () => {
+  const getRepositories = useCallback(() => {
     try {
       // Im not a fan of this if, dont know why
       if (selectedOrganization.id === 0) {
@@ -110,79 +78,122 @@ const useRepositories = () => {
       console.error(error);
       toast.error("Unable to fetch repositories");
     }
-  };
+  }, [selectedOrganization]);
 
-  // Where and why i need the single repo data?
-  // To select the branch!!
-  // Use the same searcheable thing will be nice to look for branches
-  const getSingleRepoData = async ({ id }: { id: number }) => {
-    try {
-      startLoading();
-      // Can this be a function that also acceps parameters?
-      const { data: repository }: { data: RepositoryResponse } = await api.get(
-        `/api/repositories/${id}`
+  const getSingleRepoData = useCallback(
+    async ({ id }: { id: number }) => {
+      try {
+        startLoading();
+        // Can this be a function that also acceps parameters?
+        const { data: repository }: { data: RepositoryResponse } =
+          await api.get(`/api/repositories/${id}`);
+
+        stopLoading();
+        return repository;
+      } catch (error) {
+        toast.error("Unable to fetch repository");
+        console.error(error);
+      }
+    },
+    [startLoading, stopLoading]
+  );
+
+  const getSingleRepoConfigs = useCallback(
+    async ({ id }: { id: number }) => {
+      try {
+        startLoading();
+        const params = {
+          repositoryRoot: source,
+          branch: selectedBranch.name,
+        };
+
+        const { data: repositoryConfigsResponse }: { data: RepositoryConfigs } =
+          await api.get(
+            `/api/repositories/${id}/configs?` + new URLSearchParams(params)
+          );
+
+        setRepositoryConfigs(repositoryConfigsResponse);
+
+        const includesHardhat =
+          repositoryConfigsResponse.framework &&
+          repositoryConfigsResponse.framework.includes("hardhat");
+
+        includesHardhat ? setIsHardhat(true) : setIsHardhat(false);
+
+        stopLoading();
+        return repositoryConfigsResponse;
+      } catch (error) {
+        toast.error("Unable to get repository");
+        stopLoading();
+      }
+    },
+    [source, selectedBranch, setIsHardhat, startLoading, stopLoading]
+  );
+
+  const handleRepositoryChange = useCallback(
+    (targetId: number) => {
+      const repositoryToSelect = await getSingleRepoData({ id: targetId });
+
+      if (repositoryToSelect) {
+        setSelectedRepository(repositoryToSelect.repository);
+        setBranches(repositoryToSelect.branches);
+        setSelectedBranch(repositoryToSelect.branches[0]);
+      }
+    },
+    [getSingleRepoData]
+  );
+
+  const handleOrganizationChange = useCallback(
+    (targetId: number) => {
+      const organizationToSelect = organizations.find(
+        (organization) => organization.id === targetId
       );
 
-      stopLoading();
-      return repository;
-    } catch (error) {
-      toast.error("Unable to fetch repository");
-      console.error(error);
+      if (organizationToSelect) setSelectedOrganization(organizationToSelect);
+    },
+    [organizations]
+  );
+
+  const handleBranchChange = useCallback(
+    (name: string) => {
+      const branchToSelect = branches.find((branch) => branch.name === name);
+
+      if (branchToSelect) setSelectedBranch(branchToSelect);
+    },
+    [branches]
+  );
+
+  useEffect(() => {
+    if (Object.keys(userInfo).length) {
+      getOrganizations();
     }
-  };
+  }, [userInfo, getOrganizations]);
 
-  const getSingleRepoConfigs = async ({ id }: { id: number }) => {
-    try {
-      startLoading();
-      const params = {
-        repositoryRoot: source,
-        branch: selectedBranch.name,
-      };
+  useEffect(() => {
+    getRepositories();
+  }, [selectedOrganization, getRepositories]);
 
-      const { data: repositoryConfigsResponse }: { data: RepositoryConfigs } =
-        await api.get(
-          `/api/repositories/${id}/configs?` + new URLSearchParams(params)
-        );
+  useEffect(() => {
+    if (selectedRepository.id)
+      getSingleRepoConfigs({ id: selectedRepository.id });
+  }, [source, selectedBranch, selectedRepository, getSingleRepoConfigs]);
 
-      const includesHardhat =
-        repositoryConfigsResponse.framework &&
-        repositoryConfigsResponse.framework.includes("hardhat");
-
-      includesHardhat ? setIsHardhat(true) : setIsHardhat(false);
-
-      stopLoading();
-      return repositoryConfigsResponse;
-    } catch (error) {
-      toast.error("Unable to get repository");
-      stopLoading();
-    }
-  };
-
-  // Can this handle changes be abstracted into a single function?
-  // This logic should be monstly inside hooks
-  const handleRepositoryChange = async (targetId: number) => {
-    const repositoryToSelect = await getSingleRepoData({ id: targetId });
-
-    if (repositoryToSelect) {
-      setSelectedRepository(repositoryToSelect.repository);
-      setBranches(repositoryToSelect.branches);
-      setSelectedBranch(repositoryToSelect.branches[0]);
-    }
-  };
-
-  const handleOrganizationChange = (targetId: number) => {
-    const organizationToSelect = organizations.find(
-      (organization) => organization.id === targetId
-    );
-
-    if (organizationToSelect) setSelectedOrganization(organizationToSelect);
-  };
-
-  const handleBranchChange = (name: string) => {
-    const branchToSelect = branches.find((branch) => branch.name === name);
-
-    if (branchToSelect) setSelectedBranch(branchToSelect);
-  };
+  useEffect(() => {
+    setCodeProviderStep({
+      organization: selectedOrganization,
+      repository: selectedRepository,
+      branch: selectedBranch,
+      repositoryConfigs: repositoryConfigs,
+      source,
+    });
+  }, [
+    selectedOrganization,
+    selectedRepository,
+    selectedBranch,
+    repositoryConfigs,
+    source,
+    setCodeProviderStep,
+  ]);
 
   return {
     organizations,

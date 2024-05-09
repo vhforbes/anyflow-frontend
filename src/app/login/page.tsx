@@ -16,7 +16,7 @@ const AuthPage = () => {
     if (isAuthenticated) {
       router.push("/deploy-steps/01-code-provider");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
   // MAKE A CONDITINAL HERE TO NOT RENDER WHEN LOADING?
   return (
