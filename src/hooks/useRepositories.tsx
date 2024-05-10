@@ -7,7 +7,7 @@ import {
   Organization,
   Repository,
   RepositoryConfigs,
-} from "@/interfaces/repositoriesInterface";
+} from "@/interfaces/RepositoriesInterface";
 import toast from "react-hot-toast";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 
