@@ -46,24 +46,30 @@ export const DeployStepsContextProvider = ({
     {} as CodeProviderStep
   );
 
+  // Recover state in case the user refreshes the page
   useEffect(() => {
-    const codeProverStepLocalStorage = JSON.parse(
-      localStorage.getItem("codeProviderStep") || ""
+    const codeProviderStepLocalStorage =
+      localStorage.getItem("codeProviderStep");
+
+    console.log(codeProviderStepLocalStorage);
+
+    const parsedProviderStepLocalStorage: CodeProviderStep = JSON.parse(
+      codeProviderStepLocalStorage || "{}"
     );
 
-    console.log(codeProverStepLocalStorage);
-
-    // Recover state in case the user refreshes the page
     if (
-      !Object.keys(codeProviderStep).length &&
-      Object.keys(codeProverStepLocalStorage).length
+      Object.keys(codeProviderStep).length === 0 &&
+      Object.keys(parsedProviderStepLocalStorage).length !== 0
     ) {
-      console.log("Trying to setCodeProviderStep");
-      setCodeProviderStep(JSON.parse(codeProverStepLocalStorage));
+      console.log("Inside setter");
+      setCodeProviderStep(parsedProviderStepLocalStorage);
+      console.log(parsedProviderStepLocalStorage);
       return;
     }
 
     localStorage.setItem("codeProviderStep", JSON.stringify(codeProviderStep));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codeProviderStep]);
 
   return (

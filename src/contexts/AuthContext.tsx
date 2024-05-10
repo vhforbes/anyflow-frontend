@@ -40,14 +40,19 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
       if (!authState) router.push("/login");
 
-      const localUserInfo = localStorage.getItem("userInfo");
+      // This was preventing the state to be set when nothing on the localStorage
 
-      if (localUserInfo !== "undefined" && authState) {
-        setUserInfo(JSON.parse(localUserInfo as string));
-        return;
-      }
+      // const localUserInfo = localStorage.getItem("userInfo");
+
+      // if (localUserInfo !== "undefined" && authState) {
+      //   setUserInfo(JSON.parse(localUserInfo as string));
+      //   return;
+      // }
 
       const userData = await getUserAuthData();
+
+      console.log("userData");
+      console.log(userData);
 
       localStorage.setItem("userInfo", JSON.stringify(userData));
 
@@ -60,7 +65,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     };
 
     getUserData();
-  }, [checkAuthState, getUserAuthData, router]);
+  }, []);
 
   return (
     <AuthContext.Provider

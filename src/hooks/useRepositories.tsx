@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 import useLoader from "./useLoader";
 import { useAuthContext } from "@/contexts/AuthContext";
@@ -16,7 +17,7 @@ interface RepositoryResponse {
   repository: Repository;
 }
 
-// Will this data need to be shared as a context? How many compoenents do we expect to see it?
+// [] Create a way to get existing parameters (if exists) from localtorage / state and fill it
 const useRepositories = () => {
   const [organizations, setOrganizations] = useState([] as Organization[]);
   const [selectedOrganization, setSelectedOrganization] = useState(
@@ -60,7 +61,7 @@ const useRepositories = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [startLoading, stopLoading, userInfo]);
+  }, [userInfo]);
 
   const getRepositories = useCallback(async () => {
     try {
@@ -80,23 +81,21 @@ const useRepositories = () => {
     }
   }, [selectedOrganization]);
 
-  const getSingleRepoData = useCallback(
-    async ({ id }: { id: number }) => {
-      try {
-        startLoading();
-        // Can this be a function that also acceps parameters?
-        const { data: repository }: { data: RepositoryResponse } =
-          await api.get(`/api/repositories/${id}`);
+  const getSingleRepoData = useCallback(async ({ id }: { id: number }) => {
+    try {
+      startLoading();
+      // Can this be a function that also acceps parameters?
+      const { data: repository }: { data: RepositoryResponse } = await api.get(
+        `/api/repositories/${id}`
+      );
 
-        stopLoading();
-        return repository;
-      } catch (error) {
-        toast.error("Unable to fetch repository");
-        console.error(error);
-      }
-    },
-    [startLoading, stopLoading]
-  );
+      stopLoading();
+      return repository;
+    } catch (error) {
+      toast.error("Unable to fetch repository");
+      console.error(error);
+    }
+  }, []);
 
   const getSingleRepoConfigs = useCallback(
     async ({ id }: { id: number }) => {
@@ -127,21 +126,18 @@ const useRepositories = () => {
         stopLoading();
       }
     },
-    [source, selectedBranch, setIsHardhat, startLoading, stopLoading]
+    [source, selectedBranch]
   );
 
-  const handleRepositoryChange = useCallback(
-    async (targetId: number) => {
-      const repositoryToSelect = await getSingleRepoData({ id: targetId });
+  const handleRepositoryChange = useCallback(async (targetId: number) => {
+    const repositoryToSelect = await getSingleRepoData({ id: targetId });
 
-      if (repositoryToSelect) {
-        setSelectedRepository(repositoryToSelect.repository);
-        setBranches(repositoryToSelect.branches);
-        setSelectedBranch(repositoryToSelect.branches[0]);
-      }
-    },
-    [getSingleRepoData]
-  );
+    if (repositoryToSelect) {
+      setSelectedRepository(repositoryToSelect.repository);
+      setBranches(repositoryToSelect.branches);
+      setSelectedBranch(repositoryToSelect.branches[0]);
+    }
+  }, []);
 
   const handleOrganizationChange = useCallback(
     (targetId: number) => {
@@ -167,23 +163,35 @@ const useRepositories = () => {
     if (Object.keys(userInfo).length) {
       getOrganizations();
     }
-  }, [userInfo, getOrganizations]);
+  }, [userInfo]);
 
   useEffect(() => {
     getRepositories();
-  }, [selectedOrganization, getRepositories]);
+  }, [selectedOrganization]);
 
   useEffect(() => {
     if (selectedRepository.id)
       getSingleRepoConfigs({ id: selectedRepository.id });
-  }, [source, selectedBranch, selectedRepository, getSingleRepoConfigs]);
+  }, [source, selectedBranch, selectedRepository]);
 
+  // Sets the shared state context
   useEffect(() => {
     setCodeProviderStep({
-      organization: selectedOrganization,
-      repository: selectedRepository,
-      branch: selectedBranch,
-      repositoryConfigs: repositoryConfigs,
+      organization: {
+        id: selectedOrganization.id,
+        login: selectedOrganization.login,
+      },
+      repository: {
+        id: selectedRepository.id,
+        name: selectedRepository.name,
+      },
+      branch: {
+        name: selectedBranch.name,
+      },
+      repositoryConfigs: {
+        framework: repositoryConfigs.framework,
+        name: repositoryConfigs.name,
+      },
       source,
     });
   }, [
@@ -192,7 +200,6 @@ const useRepositories = () => {
     selectedBranch,
     repositoryConfigs,
     source,
-    setCodeProviderStep,
   ]);
 
   return {
