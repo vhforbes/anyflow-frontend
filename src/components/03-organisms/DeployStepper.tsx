@@ -10,7 +10,8 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
     <ul className="steps steps-vertical sm:min-w-[400px] sm:steps-horizontal">
       <li className={`step ${setStep(1)}`}>Provider</li>
       <li className={`step ${setStep(2)}`}>Settings</li>
-      <li className={`step ${setStep(3)}`}>Status</li>
+      <li className={`step ${setStep(3)}`}>Preview</li>
+      <li className={`step ${setStep(4)}`}>Status</li>
     </ul>
   );
 };

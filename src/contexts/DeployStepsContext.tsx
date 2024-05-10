@@ -36,8 +36,9 @@ type CodeProviderStep = {
 type DeploySettingsStep = {
   selectedChains: Pick<
     ChainWithSettings,
-    "name" | "id" | "verifyContracts" | "testnet"
+    "name" | "id" | "verifyContracts" | "envVariables"
   >[];
+  globalEnvVariables: string;
 };
 
 const DeployStepsContext = createContext<DeployStepsContextType>(

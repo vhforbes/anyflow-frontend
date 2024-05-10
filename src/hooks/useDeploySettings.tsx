@@ -140,10 +140,11 @@ const useDeploy = () => {
 
     setDeploySettingsStep({
       selectedChains,
+      globalEnvVariables,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChains]);
+  }, [selectedChains, globalEnvVariables]);
 
   return {
     chanisList,

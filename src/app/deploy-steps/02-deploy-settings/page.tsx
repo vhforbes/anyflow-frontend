@@ -116,7 +116,7 @@ const DeploySettingsPage = () => {
 
             OTHERWISE WILL CLEAR ALL VERIFYS
 
-            */}
+          */}
 
           {selectedChains.length > 0 ? (
             <h2 className="text-xl font-bold text-center mt-4">
@@ -167,9 +167,7 @@ const DeploySettingsPage = () => {
         </div>
 
         {/* BUTTONS SECTION
-        
             COMPONENTIZE THIS GUY
-
         */}
         <div className="flex justify-between mt-10 w-full max-w-2xl m-auto">
           <button className="flex justify-between btn btn-sm md:btn-md">
@@ -177,8 +175,11 @@ const DeploySettingsPage = () => {
             <Link href="/deploy-steps/01-code-provider">Code Provider</Link>
           </button>
 
-          <button className="btn btn-sm md:btn-md">
-            <Link href="/deploy-steps/03-deploy-status">Deploy Status</Link>
+          <button
+            className="btn btn-sm md:btn-md"
+            disabled={selectedChains.length === 0}
+          >
+            <Link href="/deploy-steps/03-preview">Deploy Preview</Link>
             <ArrowRight />
           </button>
         </div>
