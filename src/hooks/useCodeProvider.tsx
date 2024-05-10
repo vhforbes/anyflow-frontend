@@ -18,7 +18,7 @@ interface RepositoryResponse {
 }
 
 // [] Create a way to get existing parameters (if exists) from localtorage / state and fill it
-const useRepositories = () => {
+const useCodeProvider = () => {
   const [organizations, setOrganizations] = useState([] as Organization[]);
   const [selectedOrganization, setSelectedOrganization] = useState(
     {} as Organization
@@ -225,4 +225,4 @@ const useRepositories = () => {
   };
 };
 
-export default useRepositories;
+export default useCodeProvider;

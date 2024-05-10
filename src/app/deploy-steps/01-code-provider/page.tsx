@@ -2,7 +2,7 @@
 
 import DynamicSearchBar from "@/components/03-organisms/DynamicSearchBar";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
-import useRepositories from "@/hooks/useRepositories";
+import useCodeProvider from "@/hooks/useCodeProvider";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ const CodeProviderPage = () => {
     handleOrganizationChange,
     handleRepositoryChange,
     handleBranchChange,
-  } = useRepositories();
+  } = useCodeProvider();
 
   const [customRoot, setCustomRoot] = useState(false);
 

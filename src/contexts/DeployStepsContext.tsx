@@ -1,5 +1,6 @@
 "use client";
 import { useAuth } from "@/hooks/useAuth";
+import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
 import {
   Branch,
   Organization,
@@ -20,9 +21,8 @@ import {
 type DeployStepsContextType = {
   codeProviderStep: CodeProviderStep;
   setCodeProviderStep: Dispatch<SetStateAction<CodeProviderStep>>;
-  //   deploySettingsStep: {
-  //     // thigs that need to be shared for that step
-  //   };
+  deploySettingsStep: DeploySettingsStep;
+  setDeploySettingsStep: Dispatch<SetStateAction<DeploySettingsStep>>;
 };
 
 type CodeProviderStep = {
@@ -31,6 +31,13 @@ type CodeProviderStep = {
   branch: Branch;
   repositoryConfigs: RepositoryConfigs;
   source: string;
+};
+
+type DeploySettingsStep = {
+  selectedChains: Pick<
+    ChainWithSettings,
+    "name" | "id" | "verifyContracts" | "testnet"
+  >[];
 };
 
 const DeployStepsContext = createContext<DeployStepsContextType>(
@@ -42,11 +49,15 @@ export const DeployStepsContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [codeProviderStep, setCodeProviderStep] = useState<CodeProviderStep>(
+  const [codeProviderStep, setCodeProviderStep] = useState(
     {} as CodeProviderStep
   );
 
-  // Recover state in case the user refreshes the page
+  const [deploySettingsStep, setDeploySettingsStep] = useState(
+    {} as DeploySettingsStep
+  );
+
+  // Recover codeProviderStepState in case the user refreshes the page
   useEffect(() => {
     const codeProviderStepLocalStorage =
       localStorage.getItem("codeProviderStep");
@@ -61,7 +72,6 @@ export const DeployStepsContextProvider = ({
       Object.keys(codeProviderStep).length === 0 &&
       Object.keys(parsedProviderStepLocalStorage).length !== 0
     ) {
-      console.log("Inside setter");
       setCodeProviderStep(parsedProviderStepLocalStorage);
       console.log(parsedProviderStepLocalStorage);
       return;
@@ -72,11 +82,41 @@ export const DeployStepsContextProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codeProviderStep]);
 
+  // This is the same of the above with a diff getItem Key.
+  // Theres probably a way to have only one function but I cant thing straight RN
+  // There's maybe a better way to manage local storage but this looks straightforward
+  useEffect(() => {
+    const deploySettingsLocalStorage =
+      localStorage.getItem("deploySettingsStep");
+
+    console.log(deploySettingsLocalStorage);
+
+    const parsedDeploySettingsLocalStorage: DeploySettingsStep = JSON.parse(
+      deploySettingsLocalStorage || "{}"
+    );
+
+    if (
+      Object.keys(deploySettingsStep).length === 0 &&
+      Object.keys(parsedDeploySettingsLocalStorage).length !== 0
+    ) {
+      setDeploySettingsStep(parsedDeploySettingsLocalStorage);
+      return;
+    }
+
+    localStorage.setItem(
+      "deploySettingsStep",
+      JSON.stringify(deploySettingsStep)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deploySettingsStep]);
+
   return (
     <DeployStepsContext.Provider
       value={{
         codeProviderStep,
         setCodeProviderStep,
+        deploySettingsStep,
+        setDeploySettingsStep,
       }}
     >
       {children}

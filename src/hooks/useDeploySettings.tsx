@@ -1,3 +1,4 @@
+import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
 import { useEffect, useState } from "react";
 import {
@@ -50,19 +51,7 @@ const useDeploy = () => {
 
   const [verifyAllChecked, setVerifyAllChecked] = useState(false);
 
-  useEffect(() => {
-    const allVerifyChecked = selectedChains.filter(
-      (chain) => chain.verifyContracts
-    );
-
-    if (allVerifyChecked.length === selectedChains.length) {
-      setVerifyAllChecked(true);
-    }
-
-    if (allVerifyChecked.length !== selectedChains.length) {
-      setVerifyAllChecked(false);
-    }
-  }, [selectedChains]);
+  const { setDeploySettingsStep } = useDeployStepsContext();
 
   const handleSelectAll = () => {
     if (chanisList.length === selectedChains.length) {
@@ -129,6 +118,32 @@ const useDeploy = () => {
       }))
     );
   };
+
+  useEffect(() => {
+    const allVerifyChecked = selectedChains.filter(
+      (chain) => chain.verifyContracts
+    );
+
+    if (
+      allVerifyChecked.length === selectedChains.length &&
+      selectedChains.length
+    ) {
+      setVerifyAllChecked(true);
+    }
+
+    if (
+      allVerifyChecked.length !== selectedChains.length &&
+      selectedChains.length
+    ) {
+      setVerifyAllChecked(false);
+    }
+
+    setDeploySettingsStep({
+      selectedChains,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedChains]);
 
   return {
     chanisList,
