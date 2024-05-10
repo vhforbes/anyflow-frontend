@@ -47,10 +47,18 @@ export const DeployStepsContextProvider = ({
   );
 
   useEffect(() => {
-    const codeProverStepLocalStorage = localStorage.getItem("codeProviderStep");
+    const codeProverStepLocalStorage = JSON.parse(
+      localStorage.getItem("codeProviderStep") || ""
+    );
+
+    console.log(codeProverStepLocalStorage);
 
     // Recover state in case the user refreshes the page
-    if (!Object.keys(codeProviderStep).length && codeProverStepLocalStorage) {
+    if (
+      !Object.keys(codeProviderStep).length &&
+      Object.keys(codeProverStepLocalStorage).length
+    ) {
+      console.log("Trying to setCodeProviderStep");
       setCodeProviderStep(JSON.parse(codeProverStepLocalStorage));
       return;
     }
