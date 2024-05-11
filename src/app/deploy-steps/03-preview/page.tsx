@@ -20,11 +20,8 @@ const DeployPreviewPage = () => {
           {codeProviderStep.source ? (
             <p>Custom root: {codeProviderStep.source}</p>
           ) : null}
-          <pre className="whitespace-pre-wrap">
-            <code className="whitespace-pre-wrap">
-              Framework: {codeProviderStep.repositoryConfigs?.framework}
-            </code>
-          </pre>
+
+          <p>Framework: {codeProviderStep.repositoryConfigs?.framework}</p>
         </div>
 
         <div className="mt-8">
