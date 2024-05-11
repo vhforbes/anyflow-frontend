@@ -14,7 +14,7 @@ const CodeProviderPage = () => {
     branches,
     selectedBranch,
     selectedRepository,
-    setSource,
+    setRoot,
     isHardhat,
     handleOrganizationChange,
     handleRepositoryChange,
@@ -97,7 +97,7 @@ const CodeProviderPage = () => {
                     name: "/app",
                   },
                 ]}
-                setOnChange={(name: string) => setSource(name)}
+                setOnChange={(name: string) => setRoot(name)}
               />
               <p className="font-light">Leave empty if root is / </p>
             </div>

@@ -30,7 +30,7 @@ type CodeProviderStep = {
   repository: Repository;
   branch: Branch;
   repositoryConfigs: RepositoryConfigs;
-  source: string;
+  root: string;
 };
 
 type DeploySettingsStep = {
@@ -63,8 +63,6 @@ export const DeployStepsContextProvider = ({
     const codeProviderStepLocalStorage =
       localStorage.getItem("codeProviderStep");
 
-    console.log(codeProviderStepLocalStorage);
-
     const parsedProviderStepLocalStorage: CodeProviderStep = JSON.parse(
       codeProviderStepLocalStorage || "{}"
     );
@@ -74,7 +72,6 @@ export const DeployStepsContextProvider = ({
       Object.keys(parsedProviderStepLocalStorage).length !== 0
     ) {
       setCodeProviderStep(parsedProviderStepLocalStorage);
-      console.log(parsedProviderStepLocalStorage);
       return;
     }
 
@@ -89,8 +86,6 @@ export const DeployStepsContextProvider = ({
   useEffect(() => {
     const deploySettingsLocalStorage =
       localStorage.getItem("deploySettingsStep");
-
-    console.log(deploySettingsLocalStorage);
 
     const parsedDeploySettingsLocalStorage: DeploySettingsStep = JSON.parse(
       deploySettingsLocalStorage || "{}"

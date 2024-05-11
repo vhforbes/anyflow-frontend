@@ -51,9 +51,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
       const userData = await getUserAuthData();
 
-      console.log("userData");
-      console.log(userData);
-
       localStorage.setItem("userInfo", JSON.stringify(userData));
 
       if (userData) {

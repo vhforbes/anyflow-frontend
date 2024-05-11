@@ -34,7 +34,7 @@ const useCodeProvider = () => {
     {} as RepositoryConfigs
   );
 
-  const [source, setSource] = useState("");
+  const [root, setRoot] = useState("");
 
   const [isHardhat, setIsHardhat] = useState(false);
 
@@ -102,7 +102,7 @@ const useCodeProvider = () => {
       try {
         startLoading();
         const params = {
-          repositoryRoot: source,
+          repositoryRoot: root,
           branch: selectedBranch.name,
         };
 
@@ -126,7 +126,7 @@ const useCodeProvider = () => {
         stopLoading();
       }
     },
-    [source, selectedBranch]
+    [root, selectedBranch]
   );
 
   const handleRepositoryChange = useCallback(async (targetId: number) => {
@@ -172,7 +172,7 @@ const useCodeProvider = () => {
   useEffect(() => {
     if (selectedRepository.id)
       getSingleRepoConfigs({ id: selectedRepository.id });
-  }, [source, selectedBranch, selectedRepository]);
+  }, [root, selectedBranch, selectedRepository]);
 
   // Sets the shared state context
   useEffect(() => {
@@ -192,14 +192,14 @@ const useCodeProvider = () => {
         framework: repositoryConfigs.framework,
         name: repositoryConfigs.name,
       },
-      source,
+      root,
     });
   }, [
     selectedOrganization,
     selectedRepository,
     selectedBranch,
     repositoryConfigs,
-    source,
+    root,
   ]);
 
   return {
@@ -210,8 +210,8 @@ const useCodeProvider = () => {
     repositoryConfigs,
     branches,
     selectedBranch,
-    source,
-    setSource,
+    root,
+    setRoot,
     isHardhat,
     setIsHardhat,
 
