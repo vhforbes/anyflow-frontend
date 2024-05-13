@@ -17,8 +17,8 @@ const DeployPreviewPage = () => {
           <p>Organization: {codeProviderStep.organization?.login}</p>
           <p>Branch: {codeProviderStep.branch?.name}</p>
           <p>Repository: {codeProviderStep.repository?.name}</p>
-          {codeProviderStep.source ? (
-            <p>Custom root: {codeProviderStep.source}</p>
+          {codeProviderStep.root ? (
+            <p>Custom root: {codeProviderStep.root}</p>
           ) : null}
 
           <p>Framework: {codeProviderStep.repositoryConfigs?.framework}</p>
