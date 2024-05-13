@@ -23,6 +23,8 @@ const CodeProviderPage = () => {
 
   const [customRoot, setCustomRoot] = useState(false);
 
+  if (!organizations) return null;
+
   return (
     <DeployStepsLayout currentStep={1}>
       <div className="flex flex-col items-center justify-between">
@@ -47,11 +49,7 @@ const CodeProviderPage = () => {
             data={repositories}
             placeholder="Search repository..."
             setOnClick={(id) => handleRepositoryChange(id)}
-            className={`${
-              Object.keys(selectedRepository).length > 0
-                ? "border-primary"
-                : null
-            }`}
+            className={`${selectedRepository ? "border-primary" : null}`}
             disabled={organizations.length === 0}
           />
         </div>
@@ -62,9 +60,9 @@ const CodeProviderPage = () => {
               selectedBranch ? "select-primary" : null
             }`}
             onChange={(e) => handleBranchChange(e.target.value)}
-            disabled={branches.length === 0}
+            disabled={branches?.length === 0}
           >
-            {branches.map((branch) => (
+            {branches?.map((branch) => (
               <option key={branch.name} value={branch.name}>
                 {branch.name}
               </option>

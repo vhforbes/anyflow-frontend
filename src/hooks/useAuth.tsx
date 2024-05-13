@@ -1,8 +1,5 @@
 import api from "@/utils/axios";
 import useLoader from "./useLoader";
-import { useAuthContext } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 
 type userAuthData = {
   id: number;
@@ -19,7 +16,6 @@ type checkAuthData = {
 
 export const useAuth = () => {
   const { startLoading, stopLoading } = useLoader();
-  const { isAuthenticated } = useAuthContext();
 
   const authUser = async () => {
     const params = {

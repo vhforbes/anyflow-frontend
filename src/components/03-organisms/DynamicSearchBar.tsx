@@ -2,7 +2,7 @@ import { Repository } from "@/interfaces/RepositoriesInterface";
 import { useEffect, useRef, useState } from "react";
 
 interface Props {
-  data: {
+  data?: {
     id: any;
     name: string;
   }[];
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const DynamicSearchBar: React.FC<Props> = ({
-  data,
+  data = [],
   placeholder,
   className,
   setOnClick,

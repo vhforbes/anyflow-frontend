@@ -11,23 +11,24 @@ import {
   useState,
 } from "react";
 
-type UserInfoType = {
+type UserInfo = {
   email: string;
   name: string;
 };
 
 type AuthContextType = {
-  userInfo: UserInfoType;
+  userInfo: UserInfo | undefined;
   isAuthenticated: boolean | undefined;
 };
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+const AuthContext = createContext<AuthContextType>({
+  userInfo: undefined,
+  isAuthenticated: undefined,
+});
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  const [userInfo, setUserInfo] = useState<UserInfoType>({} as UserInfoType);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
-    false
-  );
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const { checkAuthState, getUserAuthData } = useAuth();
   const router = useRouter();
@@ -36,18 +37,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const getUserData = async () => {
       const authState = await checkAuthState();
 
+      if (!authState) {
+        router.push("/login");
+        return;
+      }
+
       setIsAuthenticated(authState);
-
-      if (!authState) router.push("/login");
-
-      // This was preventing the state to be set when nothing on the localStorage
-
-      // const localUserInfo = localStorage.getItem("userInfo");
-
-      // if (localUserInfo !== "undefined" && authState) {
-      //   setUserInfo(JSON.parse(localUserInfo as string));
-      //   return;
-      // }
 
       const userData = await getUserAuthData();
 

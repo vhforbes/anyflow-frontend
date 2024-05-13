@@ -19,20 +19,20 @@ interface RepositoryResponse {
 
 // [] Create a way to get existing parameters (if exists) from localtorage / state and fill it
 const useCodeProvider = () => {
-  const [organizations, setOrganizations] = useState([] as Organization[]);
-  const [selectedOrganization, setSelectedOrganization] = useState(
-    {} as Organization
-  );
-  const [repositories, setRepositories] = useState([] as Repository[]);
-  const [selectedRepository, setSelectedRepository] = useState(
-    {} as Repository
-  );
-  const [branches, setBranches] = useState([] as Branch[]);
-  const [selectedBranch, setSelectedBranch] = useState({} as Branch);
+  const [organizations, setOrganizations] = useState<
+    Organization[] | undefined
+  >(undefined);
+  const [selectedOrganization, setSelectedOrganization] =
+    useState<Organization>();
 
-  const [repositoryConfigs, setRepositoryConfigs] = useState(
-    {} as RepositoryConfigs
-  );
+  const [repositories, setRepositories] = useState<Repository[]>();
+  const [selectedRepository, setSelectedRepository] = useState<Repository>();
+
+  const [branches, setBranches] = useState<Branch[]>();
+  const [selectedBranch, setSelectedBranch] = useState<Branch>();
+
+  const [repositoryConfigs, setRepositoryConfigs] =
+    useState<RepositoryConfigs>();
 
   const [root, setRoot] = useState("");
 
@@ -47,6 +47,8 @@ const useCodeProvider = () => {
       startLoading();
       const { data: organizationsResponse }: { data: Organization[] } =
         await api.get("/api/organizations");
+
+      if (!userInfo) return;
 
       const personalOrganization = {
         id: 0,
@@ -65,6 +67,8 @@ const useCodeProvider = () => {
 
   const getRepositories = useCallback(async () => {
     try {
+      if (!selectedOrganization) return;
+
       // Im not a fan of this if, dont know why
       if (selectedOrganization.id === 0) {
         const { data: repositoriesResponse } = await api.get(
@@ -72,9 +76,9 @@ const useCodeProvider = () => {
         );
 
         setRepositories(repositoriesResponse);
-
-        return;
       }
+
+      // Why am i not getting the repos from another org here ?
     } catch (error) {
       console.error(error);
       toast.error("Unable to fetch repositories");
@@ -100,7 +104,10 @@ const useCodeProvider = () => {
   const getSingleRepoConfigs = useCallback(
     async ({ id }: { id: number }) => {
       try {
+        if (!selectedBranch) return;
+
         startLoading();
+
         const params = {
           repositoryRoot: root,
           branch: selectedBranch.name,
@@ -141,6 +148,8 @@ const useCodeProvider = () => {
 
   const handleOrganizationChange = useCallback(
     (targetId: number) => {
+      if (!organizations) return;
+
       const organizationToSelect = organizations.find(
         (organization) => organization.id === targetId
       );
@@ -152,6 +161,7 @@ const useCodeProvider = () => {
 
   const handleBranchChange = useCallback(
     (name: string) => {
+      if (!branches) return;
       const branchToSelect = branches.find((branch) => branch.name === name);
 
       if (branchToSelect) setSelectedBranch(branchToSelect);
@@ -160,7 +170,7 @@ const useCodeProvider = () => {
   );
 
   useEffect(() => {
-    if (Object.keys(userInfo).length) {
+    if (userInfo) {
       getOrganizations();
     }
   }, [userInfo]);
@@ -170,12 +180,19 @@ const useCodeProvider = () => {
   }, [selectedOrganization]);
 
   useEffect(() => {
-    if (selectedRepository.id)
-      getSingleRepoConfigs({ id: selectedRepository.id });
+    if (selectedRepository) getSingleRepoConfigs({ id: selectedRepository.id });
   }, [root, selectedBranch, selectedRepository]);
 
   // Sets the shared state context
   useEffect(() => {
+    if (
+      !selectedOrganization ||
+      !selectedRepository ||
+      !selectedBranch ||
+      !repositoryConfigs
+    )
+      return;
+
     setCodeProviderStep({
       organization: {
         id: selectedOrganization.id,

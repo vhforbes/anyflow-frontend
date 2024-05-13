@@ -19,10 +19,12 @@ import {
 } from "react";
 
 type DeployStepsContextType = {
-  codeProviderStep: CodeProviderStep;
-  setCodeProviderStep: Dispatch<SetStateAction<CodeProviderStep>>;
-  deploySettingsStep: DeploySettingsStep;
-  setDeploySettingsStep: Dispatch<SetStateAction<DeploySettingsStep>>;
+  codeProviderStep: CodeProviderStep | undefined;
+  setCodeProviderStep: Dispatch<SetStateAction<CodeProviderStep | undefined>>;
+  deploySettingsStep: DeploySettingsStep | undefined;
+  setDeploySettingsStep: Dispatch<
+    SetStateAction<DeploySettingsStep | undefined>
+  >;
 };
 
 type CodeProviderStep = {
@@ -41,34 +43,40 @@ type DeploySettingsStep = {
   globalEnvVariables: string;
 };
 
-const DeployStepsContext = createContext<DeployStepsContextType>(
-  {} as DeployStepsContextType
-);
+const DeployStepsContext = createContext<DeployStepsContextType>({
+  codeProviderStep: undefined,
+  setCodeProviderStep: () => {}, // Initial function for setting codeProviderStep
+  deploySettingsStep: undefined,
+  setDeploySettingsStep: () => {}, // Initial function for setting deploySettingsStep
+});
 
 export const DeployStepsContextProvider = ({
   children,
 }: {
   children: ReactNode;
 }) => {
-  const [codeProviderStep, setCodeProviderStep] = useState(
-    {} as CodeProviderStep
-  );
+  const [codeProviderStep, setCodeProviderStep] = useState<CodeProviderStep>();
 
-  const [deploySettingsStep, setDeploySettingsStep] = useState(
-    {} as DeploySettingsStep
-  );
+  const [deploySettingsStep, setDeploySettingsStep] =
+    useState<DeploySettingsStep>();
 
   // Recover codeProviderStepState in case the user refreshes the page
   useEffect(() => {
     const codeProviderStepLocalStorage =
       localStorage.getItem("codeProviderStep");
 
+    if (
+      codeProviderStepLocalStorage === "undefined" ||
+      !codeProviderStepLocalStorage
+    )
+      return;
+
     const parsedProviderStepLocalStorage: CodeProviderStep = JSON.parse(
-      codeProviderStepLocalStorage || "{}"
+      codeProviderStepLocalStorage
     );
 
     if (
-      Object.keys(codeProviderStep).length === 0 &&
+      codeProviderStep &&
       Object.keys(parsedProviderStepLocalStorage).length !== 0
     ) {
       setCodeProviderStep(parsedProviderStepLocalStorage);
@@ -87,12 +95,14 @@ export const DeployStepsContextProvider = ({
     const deploySettingsLocalStorage =
       localStorage.getItem("deploySettingsStep");
 
+    if (deploySettingsLocalStorage === "undefined") return;
+
     const parsedDeploySettingsLocalStorage: DeploySettingsStep = JSON.parse(
       deploySettingsLocalStorage || "{}"
     );
 
     if (
-      Object.keys(deploySettingsStep).length === 0 &&
+      deploySettingsStep &&
       Object.keys(parsedDeploySettingsLocalStorage).length !== 0
     ) {
       setDeploySettingsStep(parsedDeploySettingsLocalStorage);

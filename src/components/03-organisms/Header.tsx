@@ -19,7 +19,7 @@ const HeaderComponent = () => {
           priority
         />
       </div>
-      {userInfo.name ? (
+      {userInfo?.name ? (
         <div className="flex flex-col items-end">
           <p>Hey, {userInfo.name}</p>
           <button onClick={logOut}>Logout</button>
