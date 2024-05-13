@@ -115,7 +115,10 @@ const CodeProviderPage = () => {
         </div>
 
         <div className="min-w-64  mt-6 mb-6">
-          <button className="btn btn-secondary w-full" disabled={!isHardhat}>
+          <button
+            className="btn btn-primary w-full"
+            // disabled={!isHardhat}
+          >
             <Link href="/deploy-steps/02-deploy-settings ">
               Step 2: Deploy Settings
             </Link>

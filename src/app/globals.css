@@ -20,3 +20,15 @@
     background-position: 100% 60%;
   }
 }
+
+.btn {
+  @apply rounded-md;
+  @apply min-h-6;
+}
+
+.btn-primary {
+  @apply bg-primary;
+  @apply border-none;
+  @apply text-white;
+  @apply font-bold;
+}

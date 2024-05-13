@@ -14,6 +14,10 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        "blue-0": "#0B0C0F",
+        "blue-2": "#20222B",
+      },
     },
   },
   plugins: [daisyui],
@@ -22,7 +26,7 @@ const config: Config = {
     themes: [
       {
         dark: {
-          primary: "#06E5AD",
+          primary: "#E83664", //brand6
           secondary: "#19D6E5",
           accent: "#FD0A62",
           neutral: "#414657",
@@ -33,6 +37,8 @@ const config: Config = {
           success: "#19D6E5",
           warning: "#E2A400",
           error: "#FC632C",
+          "--blue-0": "",
+          "--blue-2": "",
         },
       },
     ], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]

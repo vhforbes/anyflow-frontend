@@ -2,36 +2,40 @@
 
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
-import Image from "next/image";
+import AnyflowFull from "../icons/AnyflowFull";
+import AnyflowLogo from "../icons/AnyflowLogo";
+
+import BetaIcon from "../icons/BetaIcon";
+import { LanguageSelector } from "../02-molecules/LanguageSelector";
 
 const HeaderComponent = () => {
   const { userInfo } = useAuthContext();
   const { authUser, logOut } = useAuth();
 
   return (
-    <div className="flex items-center justify-between bg-base-300 h-20 px-10 shadow-primary shadow-lg">
-      <div>
-        <Image
-          width={130}
-          height={130}
-          src="/anyflow-logo.png"
-          alt="anyflow header logo"
-          priority
-        />
-      </div>
-      {userInfo?.name ? (
-        <div className="flex flex-col items-end">
-          <p>Hey, {userInfo.name}</p>
-          <button onClick={logOut}>Logout</button>
+    <div className="flex items-center justify-between bg-blue-0 h-[72px] px-10 shadow-primary border-b-[1px] border-[#475467]">
+      <div className="flex items-center">
+        <div className="md:mr-12 md:ml-28 flex items-center">
+          <AnyflowFull className="mr-2" />
+          <BetaIcon />
         </div>
-      ) : (
-        <button
-          onClick={authUser}
-          className="btn btn-sm border-none hover:bg-opacity-70 btn-secondary bg-opacity-90 h-8"
-        >
-          Sign In
-        </button>
-      )}
+
+        <div>
+          <button className="btn btn-neutral border-none bg-blue-2 h-fit px-3 py-2 mr-1">
+            Start
+          </button>
+          {/* // Check wich page the user is and alter class accordingly */}
+          <button className="bg-none h-fit px-3 py-2">History</button>
+        </div>
+      </div>
+
+      <div className="flex">
+        <LanguageSelector />
+
+        <div className="rounded-full border-white border-[1px] p-2 ml-6">
+          <AnyflowLogo className="w-6 h-6" />
+        </div>
+      </div>
     </div>
   );
 };
