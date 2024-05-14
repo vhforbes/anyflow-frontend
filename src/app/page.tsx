@@ -10,11 +10,14 @@ export default function Home() {
           titleClassName="text-primary"
           title="Start Main"
           subtitle="Here you start the main deployment. Couch!"
-          IconComponent={RocketIcon}
+          IconComponent={<RocketIcon />}
+          href="/deploy-steps/01-code-provider"
         />
+
         <RedirectSquare
           title="Start Test"
           subtitle="Here you start just a test, don't worry!"
+          href=""
         />
       </div>
     </div>

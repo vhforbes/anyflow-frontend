@@ -1,4 +1,5 @@
 "use client";
+// Would be good to use server here and componentize all that uses hooks?
 
 import DynamicSearchBar from "@/components/03-organisms/DynamicSearchBar";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";

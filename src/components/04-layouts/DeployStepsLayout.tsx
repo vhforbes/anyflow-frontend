@@ -8,12 +8,12 @@ const DeployStepsLayout = ({
   currentStep: number;
 }) => {
   return (
-    <main>
-      <div className="flex justify-center sm:mt-10">
+    <div className="flex flex-col w-full">
+      <div className="mx-auto">
         <DeployStepper currentStep={currentStep} />
       </div>
       <div className="mt-10">{children}</div>
-    </main>
+    </div>
   );
 };
 
