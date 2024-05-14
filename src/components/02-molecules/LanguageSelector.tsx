@@ -1,6 +1,6 @@
 import { useState } from "react";
-import GlobeIcon from "../icons/misc/GlobeIcon";
-import DropdownArrow from "../icons/misc/ArrowDropdown";
+import GlobeIcon from "../../icons/misc/GlobeIcon";
+import DropdownArrow from "../../icons/misc/ArrowDropdown";
 
 export const LanguageSelector = () => {
   const [currentLanguage, setCurrentLanguage] = useState("EN-US");

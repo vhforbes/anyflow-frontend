@@ -2,10 +2,10 @@
 
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
-import AnyflowFull from "../icons/brand/AnyflowFull";
-import AnyflowLogo from "../icons/brand/AnyflowLogo";
+import AnyflowFull from "../../icons/brand/AnyflowFull";
+import AnyflowLogo from "../../icons/brand/AnyflowLogo";
 
-import BetaIcon from "../icons/BetaIcon";
+import BetaIcon from "../../icons/BetaIcon";
 import { LanguageSelector } from "../02-molecules/LanguageSelector";
 import { useRouter } from "next/navigation";
 

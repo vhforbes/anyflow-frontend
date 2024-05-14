@@ -1,5 +1,5 @@
 import RedirectSquare from "@/components/02-molecules/RedirectSquare";
-import RocketIcon from "@/components/icons/fun/RocketIcon";
+import RocketIcon from "@/icons/fun/RocketIcon";
 
 export default function Home() {
   return (

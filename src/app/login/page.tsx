@@ -4,8 +4,12 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
-import GitHubIcon from "@/components/icons/GitHubIcon";
+import GitHubIcon from "@/icons/companies/GitHubIcon";
+import AnyflowLogo from "@/icons/brand/AnyflowLogo";
+
 import { useEffect } from "react";
+import BitbucketIcon from "@/icons/companies/BitbucketIcon";
+import GitlabIcon from "@/icons/companies/GitlabIcon";
 
 const AuthPage = () => {
   const { isAuthenticated } = useAuthContext();
@@ -14,25 +18,46 @@ const AuthPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push("/deploy-steps/01-code-provider");
+      router.push("/");
     }
   }, [isAuthenticated, router]);
 
   // MAKE A CONDITINAL HERE TO NOT RENDER WHEN LOADING?
   return (
-    <div className="flex justify-center mt-10">
-      <div className="card flex flex-col justify-between min-h-60 items-center w-96 bg-base-100 shadow-xl p-4">
-        <p className="text-2xl font-bold">Welcome to Anyflow</p>
-        <p className="text-center">
-          Please use your github to start deploying you applications using
-          anyflow!
-          <br />
-          (Maybe say something to tranquilize about repo access etc ?)
-        </p>
-        <button className="btn" onClick={authUser}>
-          {" "}
-          <GitHubIcon className="fill-white" /> Sign In With Github
-        </button>
+    <div className="flex justify-center mt-10 w-full">
+      <div className="card flex flex-col items-center shadow-xl p-4">
+        <AnyflowLogo className="w-16 h-16" />
+        <p className="text-4xl font-bold mt-6">Welcome to Anyflow</p>
+        <p className="text-center mt-3">Link your code provider to start.</p>
+
+        <div className="flex mt-8">
+          <input type="checkbox" className="mr-2" />
+          <p className="text-blue-8">Remember for 30 days</p>
+        </div>
+
+        <div className="flex flex-col w-full mt-6">
+          <button
+            className="btn bg-white text-blue-0 font-bold hover:bg-blue-8"
+            onClick={authUser}
+          >
+            {" "}
+            <GitHubIcon className="fill-black" /> Log in With Github
+          </button>
+          <button
+            className="btn w-full disabled:text-blue-5 disabled:bg-blue-2 font-bold mt-6"
+            disabled
+          >
+            {" "}
+            <BitbucketIcon className="fill-blue-5" /> Log in With Bitbucket
+          </button>
+          <button
+            className="btn w-full disabled:text-blue-5 disabled:bg-blue-2 font-bold mt-6"
+            disabled
+          >
+            {" "}
+            <GitlabIcon className="fill-blue-5" /> Log in With Gitlab
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import DiagonalArrow from "../icons/misc/DiagonalArrow";
+import DiagonalArrow from "../../icons/misc/DiagonalArrow";
 
 const RedirectSquare = ({
   title,
