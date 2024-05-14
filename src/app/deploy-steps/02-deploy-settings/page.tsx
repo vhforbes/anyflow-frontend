@@ -3,7 +3,7 @@ import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import useDeploy from "@/hooks/useDeploySettings";
 import Link from "next/link";
 import { Chain } from "viem";
-import { ArrowLeft, ArrowRight } from "@/components/icons/ArrowsIcons";
+import { ArrowLeft, ArrowRight } from "@/icons/misc/ArrowsIcons";
 
 const DeploySettingsPage = () => {
   const {

@@ -1,32 +1,111 @@
 import { StepStatus } from "@/enums/StepStatus";
 import { CurrentStep } from "../02-molecules/CurrentStep";
+import { useEffect, useState } from "react";
 
 const DeployStepper = ({ currentStep }: { currentStep: number }) => {
-  // Currently very basic logic with fixed steps.
-  // Can increment it to become more compolex, passing the steps names and a custom number of steps
+  const [steps, setSteps] = useState<
+    {
+      name: string;
+      status: StepStatus;
+    }[]
+  >();
 
-  const setStep = (stepNumber: number) => {
-    if (stepNumber <= currentStep) return "step-primary";
-  };
+  useEffect(() => {
+    switch (currentStep) {
+      case 1:
+        setSteps([
+          {
+            name: "Code Provider",
+            status: StepStatus.Current,
+          },
+          {
+            name: "Deployment Settings",
+            status: StepStatus.NotCompleted,
+          },
+          {
+            name: "Deployment Preview",
+            status: StepStatus.NotCompleted,
+          },
+          {
+            name: "Deployment Status",
+            status: StepStatus.NotCompleted,
+          },
+        ]);
 
-  const steps = [
-    {
-      name: "Code Provider",
-      status: StepStatus.Completed,
-    },
-    {
-      name: "Deployment Settings",
-      status: StepStatus.Completed,
-    },
-    {
-      name: "Deployment Preview",
-      status: StepStatus.Completed,
-    },
-    {
-      name: "Deployment Status",
-      status: StepStatus.Current,
-    },
-  ];
+        break;
+
+      case 2:
+        setSteps([
+          {
+            name: "Code Provider",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Settings",
+            status: StepStatus.Current,
+          },
+          {
+            name: "Deployment Preview",
+            status: StepStatus.NotCompleted,
+          },
+          {
+            name: "Deployment Status",
+            status: StepStatus.NotCompleted,
+          },
+        ]);
+
+        break;
+
+      case 3:
+        setSteps([
+          {
+            name: "Code Provider",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Settings",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Preview",
+            status: StepStatus.Current,
+          },
+          {
+            name: "Deployment Status",
+            status: StepStatus.NotCompleted,
+          },
+        ]);
+
+        break;
+
+      case 3:
+        setSteps([
+          {
+            name: "Code Provider",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Settings",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Preview",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Status",
+            status: StepStatus.Current,
+          },
+        ]);
+
+        break;
+
+      default:
+        break;
+    }
+  }, []);
+
+  if (!steps) return null;
 
   return (
     <div className="mt-8 flex flex-col justify-start lg:min-w-[1000px]">
