@@ -1,4 +1,5 @@
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
+import api from "@/utils/axios";
 import { useEffect, useState } from "react";
 
 interface DeployResponse {

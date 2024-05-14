@@ -7,6 +7,8 @@ import Link from "next/link";
 const DeployPreviewPage = () => {
   const { codeProviderStep, deploySettingsStep } = useDeployStepsContext();
 
+  if (!codeProviderStep || !deploySettingsStep) return null;
+
   return (
     <DeployStepsLayout currentStep={3}>
       <div className="text-center">
