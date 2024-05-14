@@ -29,7 +29,7 @@ const config: Config = {
     themes: [
       {
         dark: {
-          primary: "#E83664", //brand6
+          primary: "#E83664",
           secondary: "#19D6E5",
           accent: "#FD0A62",
           neutral: "#414657",

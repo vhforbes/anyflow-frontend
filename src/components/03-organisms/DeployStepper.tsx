@@ -1,3 +1,6 @@
+import { StepStatus } from "@/enums/StepStatus";
+import { CurrentStep } from "../02-molecules/CurrentStep";
+
 const DeployStepper = ({ currentStep }: { currentStep: number }) => {
   // Currently very basic logic with fixed steps.
   // Can increment it to become more compolex, passing the steps names and a custom number of steps
@@ -9,23 +12,19 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
   const steps = [
     {
       name: "Code Provider",
-      current: true,
-      completed: false,
+      status: StepStatus.Completed,
     },
     {
       name: "Deployment Settings",
-      current: false,
-      completed: false,
+      status: StepStatus.Completed,
     },
     {
       name: "Deployment Preview",
-      current: false,
-      completed: true,
+      status: StepStatus.Completed,
     },
     {
       name: "Deployment Status",
-      current: false,
-      completed: false,
+      status: StepStatus.Current,
     },
   ];
 
@@ -35,9 +34,14 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
         {steps.map((step, i) => (
           <div
             key={step.name}
-            className={`h-[2px] w-full relative right-32 ${
-              step.completed ? "bg-primary" : "bg-white"
-            }
+            className={`h-[2px] w-full relative right-32 top-5
+
+            ${step.status === "notCompleted" && i !== 0 ? "bg-white" : ""}
+            
+            ${step.status === "current" && i !== 0 ? "bg-white" : ""}
+
+            ${step.status === "completed" ? "bg-primary" : ""}
+
             ${i === 0 ? "bg-transparent" : ""}
             `}
           ></div>
@@ -50,59 +54,12 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
             key={step.name}
             className="flex flex-col w-full justify-center items-center"
           >
-            {step.current ? <Current /> : null}
-            {step.completed && !step.current ? <Completed /> : null}
-            {!step.completed && !step.current ? <NotCompleted /> : null}
-            <p className="text-center">{step.name}</p>
+            <CurrentStep status={step.status} name={step.name} />
           </li>
         ))}
       </ul>
     </div>
   );
 };
-
-const Current = () => (
-  <div className="">
-    <svg
-      width="10"
-      height="10"
-      viewBox="0 0 10 10"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="m-2"
-    >
-      <circle cx="5" cy="5" r="5" fill="#E83664" />
-    </svg>
-  </div>
-);
-
-const NotCompleted = () => (
-  <svg
-    width="10"
-    height="10"
-    viewBox="0 0 10 10"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="5" cy="5" r="5" fill="#9E9FA8" />
-  </svg>
-);
-
-const Completed = () => (
-  <svg
-    width="17"
-    height="15"
-    viewBox="0 0 17 15"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      d="M14.7953 0.853403L5.24867 10.0667L2.71534 7.36007C2.24867 6.92007 1.51534 6.8934 0.982005 7.26674C0.462005 7.6534 0.315338 8.3334 0.635338 8.88007L3.63534 13.7601C3.92867 14.2134 4.43534 14.4934 5.00867 14.4934C5.55534 14.4934 6.07534 14.2134 6.36867 13.7601C6.84867 13.1334 16.0087 2.2134 16.0087 2.2134C17.2087 0.986737 15.7553 -0.093263 14.7953 0.84007V0.853403Z"
-      fill="white"
-    />
-  </svg>
-);
 
 export default DeployStepper;
