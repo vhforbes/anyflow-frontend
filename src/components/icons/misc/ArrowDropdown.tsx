@@ -10,9 +10,9 @@ const DropdownArrow = ({ className }: { className?: string }) => (
     <path
       d="M1 1.5L6 6.5L11 1.5"
       stroke="white"
-      stroke-width="1.66667"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.66667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

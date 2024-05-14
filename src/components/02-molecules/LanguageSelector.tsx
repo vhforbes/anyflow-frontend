@@ -1,6 +1,6 @@
 import { useState } from "react";
-import GlobeIcon from "../icons/GlobeIcon";
-import DropdownArrow from "../icons/ArrowDropdown";
+import GlobeIcon from "../icons/misc/GlobeIcon";
+import DropdownArrow from "../icons/misc/ArrowDropdown";
 
 export const LanguageSelector = () => {
   const [currentLanguage, setCurrentLanguage] = useState("EN-US");
@@ -21,7 +21,9 @@ export const LanguageSelector = () => {
       {isOpen ? (
         <div className="flex flex-col absolute right-18 mr-2 z-20 top-14">
           {languageList.map((language) => (
-            <button onClick={() => setIsOpen(false)}>{language}</button>
+            <button key={language} onClick={() => setIsOpen(false)}>
+              {language}
+            </button>
           ))}
         </div>
       ) : null}

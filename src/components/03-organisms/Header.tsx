@@ -2,21 +2,25 @@
 
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
-import AnyflowFull from "../icons/AnyflowFull";
-import AnyflowLogo from "../icons/AnyflowLogo";
+import AnyflowFull from "../icons/brand/AnyflowFull";
+import AnyflowLogo from "../icons/brand/AnyflowLogo";
 
 import BetaIcon from "../icons/BetaIcon";
 import { LanguageSelector } from "../02-molecules/LanguageSelector";
+import { useRouter } from "next/navigation";
 
-const HeaderComponent = () => {
-  const { userInfo } = useAuthContext();
-  const { authUser, logOut } = useAuth();
+const HeaderComponent = ({ className }: { className?: string }) => {
+  const router = useRouter();
 
   return (
-    <div className="flex items-center justify-between bg-blue-0 h-[72px] px-10 shadow-primary border-b-[1px] border-[#475467]">
+    <div
+      className={`${className} bg-blue-0 h-[72px] px-10 shadow-primary border-b-[1px] border-[#475467]`}
+    >
       <div className="flex items-center">
         <div className="md:mr-12 md:ml-28 flex items-center">
-          <AnyflowFull className="mr-2" />
+          <button onClick={() => router.push("/")}>
+            <AnyflowFull className="mr-2" />
+          </button>
           <BetaIcon />
         </div>
 

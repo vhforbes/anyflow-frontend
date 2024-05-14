@@ -11,11 +11,11 @@ import { useEffect } from "react";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="flex flex-col min-h-screen">
-        <div className="bottom-0 left-0 w-full h-full fixed top-0 pattern"></div>
-        <HeaderComponent />
-        <main className="flex-grow bg-opacity-90 bg-base-200 relative">
-          <Loader />
+      <div className="bottom-0 left-0 w-full h-full fixed top-0 pattern"></div>
+      <div className="h-screen flex flex-col">
+        <HeaderComponent className="flex items-center justify-between" />
+        <main className="flex flex-1 overflow-auto bg-opacity-90 bg-base-200">
+          {/* <Loader /> */}
           {children}
         </main>
         <FooterComponent />

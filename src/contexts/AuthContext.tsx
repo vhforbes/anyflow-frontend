@@ -38,7 +38,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       const authState = await checkAuthState();
 
       if (!authState) {
-        router.push("/login");
         return;
       }
 
