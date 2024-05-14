@@ -34,6 +34,7 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
       <ul className="flex w-full">
         {steps.map((step, i) => (
           <div
+            key={step.name}
             className={`h-[2px] w-full relative right-32 ${
               step.completed ? "bg-primary" : "bg-white"
             }
@@ -45,7 +46,10 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
 
       <ul className="flex justify-between">
         {steps.map((step) => (
-          <li className="flex flex-col w-full justify-center items-center">
+          <li
+            key={step.name}
+            className="flex flex-col w-full justify-center items-center"
+          >
             {step.current ? <Current /> : null}
             {step.completed && !step.current ? <Completed /> : null}
             {!step.completed && !step.current ? <NotCompleted /> : null}
