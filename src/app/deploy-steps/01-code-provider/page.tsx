@@ -1,4 +1,5 @@
 "use client";
+import { Dropdown } from "@/components/01-atoms/Dropdown";
 // Would be good to use server here and componentize all that uses hooks?
 
 import DynamicSearchBar from "@/components/03-organisms/DynamicSearchBar";
@@ -28,31 +29,31 @@ const CodeProviderPage = () => {
 
   return (
     <DeployStepsLayout currentStep={1}>
-      <div className="flex flex-col items-center justify-between">
-        <div>
-          <select
-            className={`select min-w-64 ${
-              selectedOrganization ? "border-primary" : null
-            }`}
-            onChange={(e) => handleOrganizationChange(parseInt(e.target.value))}
-            disabled={organizations.length === 0}
-          >
-            {organizations.map((organization) => (
-              <option key={organization.id} value={organization.id}>
-                {organization.login}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="min-w-64 mt-6">
-          <DynamicSearchBar
-            data={repositories}
-            placeholder="Search repository..."
-            setOnClick={(id) => handleRepositoryChange(id)}
-            className={`${selectedRepository ? "border-primary" : null}`}
-            disabled={organizations.length === 0}
-          />
+      <div
+        className="flex flex-col items-center justify-between w-2/3 max-w-screen-lg mx-auto
+        border-[1px] rounded-lg border-blue-6 bg-blue-0 p-6"
+      >
+        <div className="flex flex-col md:flex-row items-center justify-between w-full ">
+          <div className="w-full md:w-1/2">
+            <Dropdown
+              handleChange={(value) => handleRepositoryChange(value)}
+              items={organizations.map((organization) => {
+                return {
+                  id: organization.id.toString(),
+                  value: organization.login,
+                };
+              })}
+            />
+          </div>
+          <div className="w-full md:w-1/2">
+            <DynamicSearchBar
+              data={repositories}
+              placeholder="Search repository..."
+              setOnClick={(id) => handleRepositoryChange(id)}
+              className={`${selectedRepository ? "border-primary" : null}`}
+              disabled={organizations.length === 0}
+            />
+          </div>
         </div>
 
         <div className="min-w-64  mt-6">

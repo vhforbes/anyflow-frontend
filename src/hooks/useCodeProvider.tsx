@@ -136,8 +136,10 @@ const useCodeProvider = () => {
     [root, selectedBranch]
   );
 
-  const handleRepositoryChange = useCallback(async (targetId: number) => {
-    const repositoryToSelect = await getSingleRepoData({ id: targetId });
+  const handleRepositoryChange = useCallback(async (targetId: string) => {
+    const repositoryToSelect = await getSingleRepoData({
+      id: parseInt(targetId),
+    });
 
     if (repositoryToSelect) {
       setSelectedRepository(repositoryToSelect.repository);

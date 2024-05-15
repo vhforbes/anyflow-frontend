@@ -71,9 +71,9 @@ const DynamicSearchBar: React.FC<Props> = ({
   };
 
   return (
-    <div ref={elementRef}>
+    <div className="w-full" ref={elementRef}>
       <input
-        className={`input input-bordered w-full max-w-xs ${className}`}
+        className={`input input-bordered w-full ${className}`}
         type="text"
         placeholder={placeholder}
         value={searchTerm}
