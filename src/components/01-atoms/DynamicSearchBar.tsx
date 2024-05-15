@@ -59,7 +59,6 @@ const DynamicSearchBar: React.FC<Props> = ({
   }, [searchTerm, setOnChange]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     setSearchTerm(event.target.value);
   };
 

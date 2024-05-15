@@ -7,7 +7,7 @@ export const InputLabel = ({
 }) => {
   return (
     <div>
-      <p className="mb-2 text-sm">{label}</p>
+      <p className="mb-2 text-sm text-blue-9 font-medium">{label}</p>
       {children}
     </div>
   );

@@ -1,4 +1,5 @@
 "use client";
+import { Checkbox } from "@/components/01-atoms/Checkbox";
 import { Dropdown } from "@/components/01-atoms/Dropdown";
 // Would be good to use server here and componentize all that uses hooks?
 
@@ -65,37 +66,34 @@ const CodeProviderPage = () => {
           </div>
         </div>
 
-        <div className="min-w-64  mt-6">
-          <select
-            className={`select w-full ${
-              selectedBranch ? "select-primary" : null
-            }`}
-            onChange={(e) => handleBranchChange(e.target.value)}
-            disabled={branches?.length === 0}
-          >
-            {branches?.map((branch) => (
-              <option key={branch.name} value={branch.name}>
-                {branch.name}
-              </option>
-            ))}
-          </select>
+        <div className="w-full mt-6">
+          <Dropdown
+            handleChange={(value) => handleBranchChange(value)}
+            items={branches?.map((branch) => {
+              return {
+                id: branch.name,
+                value: branch.name,
+              };
+            })}
+          />
         </div>
 
-        <div className="min-w-64 mt-6">
+        <div className="mt-6 self-start">
           {/* // THIS GUY ONLY WORKS WHEN CLICKING... */}
           <div className="flex">
-            <p className="mr-6">Custom root folder?</p>
-            <input
-              type="checkbox"
-              className="checkbox"
-              onClick={() => setCustomRoot(!customRoot)}
+            <Checkbox
+              clickHandler={() => setCustomRoot(!customRoot)}
+              checked={customRoot}
             />
-          </div>
 
-          {customRoot ? (
-            <div className="mt-6">
+            <p className="ml-2 text-sm">Custom root folder?</p>
+          </div>
+        </div>
+        {customRoot ? (
+          <div className="mt-6 w-full">
+            <InputLabel label="Project Root">
               <DynamicSearchBar
-                placeholder="Project Root"
+                placeholder=""
                 items={[
                   {
                     id: "/src",
@@ -108,10 +106,10 @@ const CodeProviderPage = () => {
                 ]}
                 setOnChange={(name: string) => setRoot(name)}
               />
-              <p className="font-light">Leave empty if root is / </p>
-            </div>
-          ) : null}
-        </div>
+            </InputLabel>
+            <p className="font-light">Leave empty if root is / </p>
+          </div>
+        ) : null}
 
         <div className="text-center text-base-300 font-extrabold  mt-6">
           {isHardhat ? (
