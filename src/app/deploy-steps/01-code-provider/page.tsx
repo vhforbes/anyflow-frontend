@@ -2,7 +2,8 @@
 import { Dropdown } from "@/components/01-atoms/Dropdown";
 // Would be good to use server here and componentize all that uses hooks?
 
-import DynamicSearchBar from "@/components/03-organisms/DynamicSearchBar";
+import DynamicSearchBar from "@/components/01-atoms/DynamicSearchBar";
+import { InputLabel } from "@/components/02-molecules/InputLabel";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import useCodeProvider from "@/hooks/useCodeProvider";
 import Link from "next/link";
@@ -34,25 +35,33 @@ const CodeProviderPage = () => {
         border-[1px] rounded-lg border-blue-6 bg-blue-0 p-6"
       >
         <div className="flex flex-col md:flex-row items-center justify-between w-full ">
-          <div className="w-full md:w-1/2">
-            <Dropdown
-              handleChange={(value) => handleRepositoryChange(value)}
-              items={organizations.map((organization) => {
-                return {
-                  id: organization.id.toString(),
-                  value: organization.login,
-                };
-              })}
-            />
+          <div className="w-full mr-6 md:w-1/2">
+            <InputLabel label="Organization">
+              <Dropdown
+                handleChange={(value) => handleRepositoryChange(value)}
+                items={organizations.map((organization) => {
+                  return {
+                    id: organization.id.toString(),
+                    value: organization.login,
+                  };
+                })}
+              />
+            </InputLabel>
           </div>
           <div className="w-full md:w-1/2">
-            <DynamicSearchBar
-              data={repositories}
-              placeholder="Search repository..."
-              setOnClick={(id) => handleRepositoryChange(id)}
-              className={`${selectedRepository ? "border-primary" : null}`}
-              disabled={organizations.length === 0}
-            />
+            <InputLabel label="Repository">
+              <DynamicSearchBar
+                items={repositories?.map((repository) => {
+                  return {
+                    id: repository.id.toString(),
+                    value: repository.name,
+                  };
+                })}
+                placeholder="Search repository..."
+                setOnClick={(id) => handleRepositoryChange(id)}
+                disabled={organizations.length === 0}
+              />
+            </InputLabel>
           </div>
         </div>
 
@@ -87,14 +96,14 @@ const CodeProviderPage = () => {
             <div className="mt-6">
               <DynamicSearchBar
                 placeholder="Project Root"
-                data={[
+                items={[
                   {
                     id: "/src",
-                    name: "/src",
+                    value: "/src",
                   },
                   {
                     id: "/app",
-                    name: "/app",
+                    value: "/app",
                   },
                 ]}
                 setOnChange={(name: string) => setRoot(name)}
