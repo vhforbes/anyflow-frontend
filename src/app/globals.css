@@ -17,3 +17,13 @@ main {
   @apply text-white;
   @apply font-bold;
 }
+
+.btn-secondary {
+  @apply bg-blue-0;
+  @apply border-[1px];
+  @apply border-white;
+  @apply text-white;
+  @apply font-bold;
+  @apply hover:bg-blue-2;
+  @apply hover:border-white;
+}

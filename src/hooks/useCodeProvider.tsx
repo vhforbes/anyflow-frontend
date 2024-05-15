@@ -195,6 +195,8 @@ const useCodeProvider = () => {
     )
       return;
 
+    console.log("setCodeProviderStep");
+
     setCodeProviderStep({
       organization: {
         id: selectedOrganization.id,

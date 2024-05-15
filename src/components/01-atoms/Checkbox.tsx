@@ -23,9 +23,9 @@ export const Checkbox = ({
           <path
             d="M9 1L3.5 6.5L1 4"
             stroke="#E83664"
-            stroke-width="1.6666"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            // strokeWidth="1.6666"
+            // strokeLinecap="round"
+            // strokeLinejoin="round"
           />
         </svg>
       ) : null}

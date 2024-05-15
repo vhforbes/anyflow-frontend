@@ -60,27 +60,19 @@ export const DeployStepsContextProvider = ({
   const [deploySettingsStep, setDeploySettingsStep] =
     useState<DeploySettingsStep>();
 
-  // Recover codeProviderStepState in case the user refreshes the page
+  // Recover codeProviderStepState from localStorage in case the user refreshes the page
   useEffect(() => {
     const codeProviderStepLocalStorage =
       localStorage.getItem("codeProviderStep");
 
-    if (
+    let hasLocalStorage =
       codeProviderStepLocalStorage === "undefined" ||
       !codeProviderStepLocalStorage
-    )
-      return;
+        ? false
+        : true;
 
-    const parsedProviderStepLocalStorage: CodeProviderStep = JSON.parse(
-      codeProviderStepLocalStorage
-    );
-
-    if (
-      codeProviderStep &&
-      Object.keys(parsedProviderStepLocalStorage).length !== 0
-    ) {
-      setCodeProviderStep(parsedProviderStepLocalStorage);
-      return;
+    if (!codeProviderStep && hasLocalStorage) {
+      setCodeProviderStep(JSON.parse(codeProviderStepLocalStorage as string));
     }
 
     localStorage.setItem("codeProviderStep", JSON.stringify(codeProviderStep));
@@ -92,22 +84,23 @@ export const DeployStepsContextProvider = ({
   // Theres probably a way to have only one function but I cant thing straight RN
   // There's maybe a better way to manage local storage but this looks straightforward
   useEffect(() => {
-    const deploySettingsLocalStorage =
-      localStorage.getItem("deploySettingsStep");
+    const deploySettingsStepLocalStorage =
+      localStorage.getItem("codeProviderStep");
 
-    if (deploySettingsLocalStorage === "undefined") return;
+    let hasLocalStorage =
+      deploySettingsStepLocalStorage === "undefined" ||
+      !deploySettingsStepLocalStorage
+        ? false
+        : true;
 
-    const parsedDeploySettingsLocalStorage: DeploySettingsStep = JSON.parse(
-      deploySettingsLocalStorage || "{}"
-    );
-
-    if (
-      deploySettingsStep &&
-      Object.keys(parsedDeploySettingsLocalStorage).length !== 0
-    ) {
-      setDeploySettingsStep(parsedDeploySettingsLocalStorage);
-      return;
+    if (!deploySettingsStep && hasLocalStorage) {
+      setCodeProviderStep(JSON.parse(deploySettingsStepLocalStorage as string));
     }
+
+    localStorage.setItem(
+      "deploySettingsStep",
+      JSON.stringify(deploySettingsStep)
+    );
 
     localStorage.setItem(
       "deploySettingsStep",

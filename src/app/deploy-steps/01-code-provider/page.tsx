@@ -4,6 +4,7 @@ import { Dropdown } from "@/components/01-atoms/Dropdown";
 // Would be good to use server here and componentize all that uses hooks?
 
 import DynamicSearchBar from "@/components/01-atoms/DynamicSearchBar";
+import { NavigateButton } from "@/components/01-atoms/NavigateButton";
 import { InputLabel } from "@/components/02-molecules/InputLabel";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import useCodeProvider from "@/hooks/useCodeProvider";
@@ -122,17 +123,19 @@ const CodeProviderPage = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className="mt-6 mb-6 mx-auto flex justify-center">
+        <NavigateButton
+          href="/deploy-steps/01-code-provider"
+          text="Back"
+          disabled
+        />
 
-        <div className="min-w-64  mt-6 mb-6">
-          <button
-            className="btn btn-primary w-full"
-            // disabled={!isHardhat}
-          >
-            <Link href="/deploy-steps/02-deploy-settings ">
-              Step 2: Deploy Settings
-            </Link>
-          </button>
-        </div>
+        <NavigateButton
+          href="/deploy-steps/02-deploy-settings"
+          text="Next"
+          disabled={!isHardhat}
+        />
       </div>
     </DeployStepsLayout>
   );
