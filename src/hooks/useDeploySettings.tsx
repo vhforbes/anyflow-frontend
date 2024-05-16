@@ -28,6 +28,8 @@ const useDeploy = () => {
   };
 
   const handleSelectAll = () => {
+    if (!chanisList) return;
+
     if (chanisList.length === selectedChains.length) {
       setSelectedChains([]);
     } else {
