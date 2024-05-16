@@ -2,8 +2,8 @@
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import useDeploy from "@/hooks/useDeploySettings";
 import Link from "next/link";
-import { Chain } from "viem";
 import { ArrowLeft, ArrowRight } from "@/icons/misc/ArrowsIcons";
+import { Chain } from "@/interfaces/ChainSettingsInterface";
 
 const DeploySettingsPage = () => {
   const {
@@ -24,6 +24,8 @@ const DeploySettingsPage = () => {
 
     return false;
   };
+
+  if (!chanisList) return null;
 
   return (
     <DeployStepsLayout currentStep={2}>
@@ -55,12 +57,14 @@ const DeploySettingsPage = () => {
               <div
                 key={chain.id}
                 className={`flex flex-grow justify-between mr-2 mt-2 border-neutral border-2 p-2 bg-base-100 bg-opacity-50 cursor-pointer hover:bg-opacity-90
-                ${isSelected(chain) ? "bg-base-300" : "bg-opacity-80"}`}
-                onClick={() => handleChainSelection(chain.id)}
+                ${isSelected(chain) ? "bg-base-300" : "bg-opacity-80"}
+                ${!chain.is_available ? "bg-red-600" : ""}
+                `}
+                onClick={() => handleChainSelection(chain.chain_id)}
               >
                 <div className="flex mr-2 items-center">
                   <p className="mr-2">{chain.name}</p>
-                  <p className="font-extralight text-xs">({chain.id})</p>
+                  <p className="font-extralight text-xs">({chain.chain_id})</p>
                 </div>
 
                 <input
