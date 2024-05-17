@@ -2,10 +2,12 @@
 
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
+import { useDeploy } from "@/hooks/useDeploy";
 import Link from "next/link";
 
 const DeployPreviewPage = () => {
   const { codeProviderStep, deploySettingsStep } = useDeployStepsContext();
+  const { deploy } = useDeploy();
 
   if (!codeProviderStep || !deploySettingsStep) return null;
 
@@ -43,7 +45,7 @@ const DeployPreviewPage = () => {
             {deploySettingsStep.selectedChains?.map((chain) => (
               <div key={chain.id} className="border-2 w-48 p-2 mt-4">
                 <p>{chain?.name}</p>
-                <p>{chain?.id}</p>
+                <p>{chain?.chain_id}</p>
                 <p>{chain?.verifyContracts ? "Verify!" : "Don't Verify"}</p>
                 <p>Env Variables:</p>
                 <pre className="bg-base-100 text-sm p-4 rounded-md w-fit text-left m-auto text-base-content mt-4">
@@ -61,7 +63,11 @@ const DeployPreviewPage = () => {
         </div>
 
         <button className="btn btn-secondary mt-4">
-          <Link href="/deploy-steps/04-status">Step 4 Deploy!</Link>
+          <Link href="/deploy-steps/02-deploy-settings">Back</Link>
+        </button>
+
+        <button onClick={() => deploy()} className="btn btn-secondary mt-4">
+          <Link href="/deploy-steps/04-status">Next</Link>
         </button>
       </div>
     </DeployStepsLayout>

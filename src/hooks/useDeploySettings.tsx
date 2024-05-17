@@ -3,7 +3,7 @@ import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
 import api from "@/utils/axios";
 import { useEffect, useState } from "react";
 
-const useDeploy = () => {
+const useDeploySettings = () => {
   const [chanisList, setChainsList] = useState<ChainWithSettings[]>();
 
   const [selectedChains, setSelectedChains] = useState(
@@ -147,4 +147,4 @@ const useDeploy = () => {
   };
 };
 
-export default useDeploy;
+export default useDeploySettings;
