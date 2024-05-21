@@ -1,5 +1,6 @@
 "use client";
 
+import { NavigateButton } from "@/components/01-atoms/NavigateButton";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { useDeploy } from "@/hooks/useDeploy";
@@ -62,13 +63,11 @@ const DeployPreviewPage = () => {
           <p>Cost estimates here: to be implemented!</p>
         </div>
 
-        <button className="btn btn-secondary mt-4">
-          <Link href="/deploy-steps/02-deploy-settings">Back</Link>
-        </button>
+        <div className="mt-6 mb-6 mx-auto flex justify-center">
+          <NavigateButton href="/deploy-steps/02-deploy-settings" text="Back" />
 
-        <button onClick={() => deploy()} className="btn btn-secondary mt-4">
-          <Link href="/deploy-steps/04-status">Next</Link>
-        </button>
+          <NavigateButton onClick={() => deploy()} text="Next" />
+        </div>
       </div>
     </DeployStepsLayout>
   );

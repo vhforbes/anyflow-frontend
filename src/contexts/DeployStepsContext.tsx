@@ -101,10 +101,10 @@ export const DeployStepsContextProvider = ({
 
   // This is the same of the above with a diff getItem Key.
   // Theres probably a way to have only one function but I cant thing straight RN
-  // There's maybe a better way to manage local storage but this looks straightforward
+  // Or maybe thers a lib that manages state (and refresh persistance) in a better way
   useEffect(() => {
     const deploySettingsStepLocalStorage =
-      localStorage.getItem("codeProviderStep");
+      localStorage.getItem("deploySettingsStep");
 
     let hasLocalStorage =
       deploySettingsStepLocalStorage === "undefined" ||

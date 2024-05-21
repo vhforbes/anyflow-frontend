@@ -1,6 +1,8 @@
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import api from "@/utils/axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useLoader from "./useLoader";
 
 interface DeployResponse {
   status: string;
@@ -42,6 +44,9 @@ interface DeployResponse {
 }
 
 export const useDeploy = () => {
+  const router = useRouter();
+  const { startLoading, stopLoading } = useLoader();
+
   const [deployPayload, setDeployPayload] = useState<DeployPayload>();
   const [currentDeploy, setCurrentDeploy] = useState<DeployResponse>();
 
@@ -50,6 +55,8 @@ export const useDeploy = () => {
 
   const buildDeployPayload = () => {
     if (codeProviderStep && deploySettingsStep) {
+      console.log(deploySettingsStep);
+
       const deployPayload: DeployPayload = {
         // Code Provider
         repository_id: codeProviderStep.repository.id,
@@ -57,7 +64,7 @@ export const useDeploy = () => {
         framework: codeProviderStep.repositoryConfigs.framework,
         root: codeProviderStep.root || "",
         // Deloy Settings
-        chains: deploySettingsStep.selectedChains.map((chain) => ({
+        chains: deploySettingsStep.selectedChains?.map((chain) => ({
           chain_id: chain.chain_id,
           environment: chain.envVariables || "",
           verify_code: chain.verifyContracts || false,
@@ -76,12 +83,11 @@ export const useDeploy = () => {
   useEffect(() => {}, [deployPayload]);
 
   const deploy = async () => {
-    console.log(deployPayload);
-
     // Check if user has a active deploy before deploying
     // if (currentDeploy) return;
 
     try {
+      startLoading();
       const { data: deployResponse }: { data: DeployResponse } = await api.post(
         "/api/deployments",
         deployPayload
@@ -90,7 +96,11 @@ export const useDeploy = () => {
       // Do i need to set this in two states? Doesent seem to good
       setCurrentDeploy(deployResponse);
       setDeployStatusStep(deployResponse.data);
+
+      stopLoading();
+      router.push(`/deploy-steps/04-status/${deployResponse.data.id}`);
     } catch (error) {
+      stopLoading();
       console.error(error);
     }
   };

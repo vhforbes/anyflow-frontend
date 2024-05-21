@@ -4,6 +4,7 @@ import useDeploy from "@/hooks/useDeploySettings";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "@/icons/misc/ArrowsIcons";
 import { Chain } from "@/interfaces/ChainSettingsInterface";
+import { NavigateButton } from "@/components/01-atoms/NavigateButton";
 
 const DeploySettingsPage = () => {
   const {
@@ -170,22 +171,14 @@ const DeploySettingsPage = () => {
           </div>
         </div>
 
-        {/* BUTTONS SECTION
-            COMPONENTIZE THIS GUY
-        */}
-        <div className="flex justify-between mt-10 w-full max-w-2xl m-auto">
-          <button className="flex justify-between btn btn-sm md:btn-md">
-            <ArrowLeft />
-            <Link href="/deploy-steps/01-code-provider">Code Provider</Link>
-          </button>
+        <div className="mt-6 mb-6 mx-auto flex justify-center">
+          <NavigateButton href="/deploy-steps/01-code-provider" text="Back" />
 
-          <button
-            className="btn btn-sm md:btn-md"
+          <NavigateButton
+            href="/deploy-steps/03-preview"
+            text="Next"
             disabled={selectedChains.length === 0}
-          >
-            <Link href="/deploy-steps/03-preview">Deploy Preview</Link>
-            <ArrowRight />
-          </button>
+          />
         </div>
       </div>
     </DeployStepsLayout>
