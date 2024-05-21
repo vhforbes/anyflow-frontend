@@ -80,7 +80,7 @@ const DeploySettingsPage = () => {
             className="mr-2"
           />
           <p>
-            Verify the contract's source code in the scan of each blockchain
+            Verify the contract`s source code in the scan of each blockchain
           </p>
         </div>
 
