@@ -5,6 +5,9 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "@/icons/misc/ArrowsIcons";
 import { Chain } from "@/interfaces/ChainSettingsInterface";
 import { NavigateButton } from "@/components/01-atoms/NavigateButton";
+import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
+import { InputLabel } from "@/components/02-molecules/InputLabel";
+import { MultiSelectDropdown } from "@/components/02-molecules/MultiSelectDropdown";
 
 const DeploySettingsPage = () => {
   const {
@@ -18,6 +21,8 @@ const DeploySettingsPage = () => {
     handleSelectedChainSettingsChange,
   } = useDeploy();
 
+  const { codeProviderStep } = useDeployStepsContext();
+
   const isSelected = (chain: Chain) => {
     const chainFound = selectedChains.find((item) => item.id === chain.id);
 
@@ -30,8 +35,41 @@ const DeploySettingsPage = () => {
 
   return (
     <DeployStepsLayout currentStep={2}>
-      <div className="flex flex-col m-auto p-2 md:p-8">
-        <div className="max-w-4xl m-auto">
+      <div
+        className="flex flex-col items-start justify-between w-2/3 max-w-screen-lg mx-auto
+        border-[1px] rounded-lg border-blue-6 bg-blue-0 p-6"
+      >
+        <h1 className="text-2xl font-bold">Deployment settings</h1>
+
+        <div className="text-random-2 mt-6 font-medium">
+          <span className="mr-3 font-bold">Git repository selected:</span>
+          <span className="mr-3">{codeProviderStep?.organization.login}</span>
+          <span className="mr-3">{">"}</span>
+          <span className="mr-3">
+            {codeProviderStep?.repository.name} {">"}{" "}
+          </span>
+          <span className="mr-3">{">"}</span>
+          <span className="mr-3">{codeProviderStep?.branch.name}</span>
+
+          <span className="mr-3">
+            {codeProviderStep?.root
+              ? `${(<span>{">"}</span>)} ${codeProviderStep.root}`
+              : null}
+          </span>
+        </div>
+
+        <div className="w-full mt-6">
+          <InputLabel label="Target Chains">
+            <MultiSelectDropdown
+              items={chanisList.map((chain) => ({
+                id: chain.chain_id.toString(),
+                value: chain.name,
+              }))}
+            />
+          </InputLabel>
+        </div>
+
+        {/* <div className="max-w-4xl m-auto mt-80">
           <p className="text-xl font-bold">
             Select the chains where you want to deploy
           </p>
@@ -52,7 +90,6 @@ const DeploySettingsPage = () => {
             />
           </div>
 
-          {/* CHAINS LIST SELECTOR */}
           <div className="flex flex-wrap items-stretch">
             {chanisList.map((chain) => (
               <div
@@ -77,7 +114,7 @@ const DeploySettingsPage = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* ENV VARIABLES SECTION  */}
 
