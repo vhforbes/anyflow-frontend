@@ -135,6 +135,7 @@ const CodeProviderPage = () => {
           href="/deploy-steps/02-deploy-settings"
           text="Next"
           disabled={!isHardhat}
+          primary
         />
       </div>
     </DeployStepsLayout>

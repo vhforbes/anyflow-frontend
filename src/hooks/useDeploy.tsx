@@ -55,8 +55,6 @@ export const useDeploy = () => {
 
   const buildDeployPayload = () => {
     if (codeProviderStep && deploySettingsStep) {
-      console.log(deploySettingsStep);
-
       const deployPayload: DeployPayload = {
         // Code Provider
         repository_id: codeProviderStep.repository.id,

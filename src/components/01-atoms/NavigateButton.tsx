@@ -5,15 +5,21 @@ export const NavigateButton = ({
   href,
   text,
   disabled,
+  primary = false,
 }: {
+  className?: string;
   onClick?: () => void;
   href?: string;
   text: string;
   disabled?: boolean;
+  primary?: boolean;
 }) => {
   return href && !disabled ? (
     <Link href={href} className="w-32 mr-3">
-      <button className="btn btn-secondary w-full" disabled={disabled}>
+      <button
+        className={`btn ${primary ? "btn-primary" : "btn-secondary"} w-full`}
+        disabled={disabled}
+      >
         {text}
       </button>
     </Link>

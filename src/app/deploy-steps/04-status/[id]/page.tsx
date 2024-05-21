@@ -1,21 +1,23 @@
 "use client";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { useDeployStatus } from "@/hooks/useDeployStatus";
+import { useTimeElapsed } from "@/hooks/useTimeElapsed";
+import dayjs from "dayjs";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const DeployStatusPage = ({ params }: { params: { id: string } }) => {
   const { deployment, getGeneralDeployment } = useDeployStatus();
-
-  const [timeElapsed, setTimeElapsed] = useState();
+  const { timeElapsed } = useTimeElapsed({
+    createdAt: deployment?.created_at,
+    finishedAt: deployment?.finished_at,
+  });
 
   useEffect(() => {
-    console.log(deployment);
-
     if (params.id) {
       getGeneralDeployment(parseInt(params.id));
     }
-  }, []);
+  }, [timeElapsed]);
 
   if (!deployment) return null;
 
@@ -34,7 +36,7 @@ const DeployStatusPage = ({ params }: { params: { id: string } }) => {
         <p>Status: {deployment?.status}</p>
         <p>Address: TBI (backend)</p>
         <p>Total gas cost: {deployment?.cost_usd}</p>
-        <p>Time Elapsed: TBI (frontend)</p>
+        <p>Time Elapsed: {timeElapsed}</p>
         <br />
 
         <p>Log:</p>

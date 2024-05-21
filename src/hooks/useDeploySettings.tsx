@@ -21,7 +21,6 @@ const useDeploySettings = () => {
       const { data: chainsResponse } = await api.get("/api/chains");
 
       if (chainsResponse.data) {
-        console.log(chainsResponse.data);
         setChainsList(chainsResponse.data);
       }
     } catch (error) {}
@@ -49,8 +48,6 @@ const useDeploySettings = () => {
     if (!selectedChainToAdd) return;
 
     selectedChainToAdd.verifyContracts = verifyAllChecked;
-
-    console.log(selectedChainToAdd);
 
     if (!alreadySelected && selectedChainToAdd) {
       setSelectedChains([...selectedChains, selectedChainToAdd]);
