@@ -65,9 +65,16 @@ const FRAMEWORKS: Framework[] = [
 interface Item {
   id: string;
   value: string;
+  available?: boolean;
 }
 
-export const MultiSelectDropdown = ({ items }: { items?: Item[] }) => {
+export const MultiSelectDropdown = ({
+  items,
+  handleSelection,
+}: {
+  items?: Item[];
+  handleSelection: (id: number) => void;
+}) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState<Item[]>();
@@ -81,6 +88,7 @@ export const MultiSelectDropdown = ({ items }: { items?: Item[] }) => {
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       const input = inputRef.current;
+
       if (input) {
         if (e.key === "Delete" || e.key === "Backspace") {
           if (input.value === "") {
@@ -103,13 +111,13 @@ export const MultiSelectDropdown = ({ items }: { items?: Item[] }) => {
   );
 
   React.useEffect(() => {
-    const selectables = items?.filter((item) => !selected?.includes(item));
+    const selectables = items?.filter(
+      (item) =>
+        !selected?.some((selectedItem) => selectedItem.value === item.value)
+    );
 
     setSelactables(selectables);
-  }, [items]);
-
-  console.log(selectables);
-  // console.log(items);
+  }, [selected, items]);
 
   if (!items) return null;
 
@@ -170,14 +178,22 @@ export const MultiSelectDropdown = ({ items }: { items?: Item[] }) => {
                       e.stopPropagation();
                     }}
                     onSelect={(value) => {
+                      handleSelection(parseInt(selectable.id));
                       setInputValue("");
                       setSelected((prev) => {
                         if (prev) return [...prev, selectable];
+                        if (!prev) return [selectable];
                       });
                     }}
                     className={"cursor-pointer"}
+                    disabled={!selectable.available}
                   >
-                    <p>{selectable.value}</p>
+                    <div className="w-full flex">
+                      <div>
+                        <p>{selectable.value}</p>
+                        <p>{selectable.id}</p>
+                      </div>
+                    </div>
                   </CommandItem>
                 );
               })}

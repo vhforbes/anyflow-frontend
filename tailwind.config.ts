@@ -17,6 +17,7 @@ const config: Config = {
         "blue-8": "#9E9FA8",
         "blue-9": "#DCDDE0",
         "random-2": "#63D3E3",
+        "warning-4": "#BB800A",
       },
     },
   },
@@ -44,6 +45,7 @@ const config: Config = {
           "--blue-8": "",
           "--blue-9": "",
           "--random-2": "",
+          "--warning-4": "",
         },
       },
     ], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]

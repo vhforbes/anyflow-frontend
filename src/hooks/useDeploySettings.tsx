@@ -37,6 +37,8 @@ const useDeploySettings = () => {
   };
 
   const handleChainSelection = (chain_id: number) => {
+    console.log(chain_id);
+
     const alreadySelected = selectedChains.find(
       (item) => item.chain_id === chain_id
     );

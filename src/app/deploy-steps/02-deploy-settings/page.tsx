@@ -8,6 +8,8 @@ import { NavigateButton } from "@/components/01-atoms/NavigateButton";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { InputLabel } from "@/components/02-molecules/InputLabel";
 import { MultiSelectDropdown } from "@/components/02-molecules/MultiSelectDropdown";
+import { Checkbox } from "@/components/01-atoms/Checkbox";
+import { GlobeIcon } from "lucide-react";
 
 const DeploySettingsPage = () => {
   const {
@@ -61,93 +63,44 @@ const DeploySettingsPage = () => {
         <div className="w-full mt-6">
           <InputLabel label="Target Chains">
             <MultiSelectDropdown
+              handleSelection={handleChainSelection}
               items={chanisList.map((chain) => ({
                 id: chain.chain_id.toString(),
                 value: chain.name,
+                available: chain.is_available,
               }))}
             />
           </InputLabel>
         </div>
 
-        {/* <div className="max-w-4xl m-auto mt-80">
-          <p className="text-xl font-bold">
-            Select the chains where you want to deploy
+        <div className="flex items-center mt-6">
+          <Checkbox
+            clickHandler={handlevalidateAllClick}
+            checked={verifyAllChecked}
+            className="mr-2"
+          />
+          <p>
+            Verify the contract's source code in the scan of each blockchain
           </p>
-          <div
-            className={`flex items-center font-bold text-xl justify-center mr-2 mt-2 border-neutral border-2 p-2 bg-base-100 bg-opacity-50 cursor-pointer hover:bg-base-200 ${
-              chanisList.length === selectedChains.length
-                ? "bg-base-300 bg-opacity-80"
-                : ""
-            }`}
-            onClick={handleSelectAll}
-          >
-            <p className="mr-2">Select All</p>
-            <input
-              type="checkbox"
-              className="checkbox checked:checkbox-primary"
-              onChange={handleSelectAll}
-              checked={chanisList.length === selectedChains.length}
-            />
-          </div>
-
-          <div className="flex flex-wrap items-stretch">
-            {chanisList.map((chain) => (
-              <div
-                key={chain.id}
-                className={`flex flex-grow justify-between mr-2 mt-2 border-neutral border-2 p-2 bg-base-100 bg-opacity-50 cursor-pointer hover:bg-opacity-90
-                ${isSelected(chain) ? "bg-base-300" : "bg-opacity-80"}
-                ${!chain.is_available ? "bg-red-600" : ""}
-                `}
-                onClick={() => handleChainSelection(chain.chain_id)}
-              >
-                <div className="flex mr-2 items-center">
-                  <p className="mr-2">{chain.name}</p>
-                  <p className="font-extralight text-xs">({chain.chain_id})</p>
-                </div>
-
-                <input
-                  type="checkbox"
-                  className="checkbox checked:checkbox-primary"
-                  onChange={() => handleChainSelection(chain.id)}
-                  checked={isSelected(chain)}
-                />
-              </div>
-            ))}
-          </div>
-        </div> */}
+        </div>
 
         {/* ENV VARIABLES SECTION  */}
 
-        <div className="mt-10">
-          <h2 className="text-2xl font-bold text-center">
-            Define your custom settings:
-          </h2>
-
-          <div
-            tabIndex={0}
-            className="collapse collapse-arrow bg-base-100 max-w-md h-fit m-auto mt-4"
-          >
-            <input type="checkbox" />
-            <div className="collapse-title text-xl font-medium">
+        <div className="mt-10 w-full">
+          <div className="flex items-center">
+            <GlobeIcon className="w-4 mr-2" />
+            <h2 className="text-xl font-bold mr-2">
               Global environment variables
-            </div>
-            <div className="collapse-content h-fit">
-              <textarea
-                onChange={(e) => setGlobalEnvVariables(e.target.value)}
-                className="textarea textarea-bordered w-full h-56"
-              />
-            </div>
+            </h2>
+            {/* Icon with modal here or hover */}
+            <span>i (tbi)</span>
           </div>
 
-          <div className="flex justify-center mt-4">
-            <input
-              type="checkbox"
-              className="checkbox mr-2"
-              checked={verifyAllChecked}
-              onChange={handlevalidateAllClick}
-            />
-            <p>Verify all contracts source code: </p>
-          </div>
+          <textarea
+            onChange={(e) => setGlobalEnvVariables(e.target.value)}
+            className="textarea textarea-bordered w-full h-28 bg-blue-0 mt-2"
+            placeholder="This environment variables will be replicated across all chains"
+          />
 
           {/* 
           
@@ -207,16 +160,40 @@ const DeploySettingsPage = () => {
             ))}
           </div>
         </div>
+      </div>
 
-        <div className="mt-6 mb-6 mx-auto flex justify-center">
-          <NavigateButton href="/deploy-steps/01-code-provider" text="Back" />
+      <div
+        className="flex flex-col items-start justify-between w-2/3 max-w-screen-lg mx-auto mt-8
+        border-[1px] rounded-lg border-warning-4 bg-blue-0 p-6"
+      >
+        <h1 className="text-xl font-bold">Chain settings</h1>
 
-          <NavigateButton
-            href="/deploy-steps/03-preview"
-            text="Next"
-            disabled={selectedChains.length === 0}
-          />
-        </div>
+        {selectedChains.map((chain) => (
+          <div className="mt-8 w-full" key={chain.chain_id}>
+            <p>{chain.name} environment variables</p>
+            <textarea
+              className="textarea textarea-bordered w-full h-28 bg-blue-0 mt-2"
+              placeholder={`This environment variables will be replicated only across ${chain.name} `}
+              onChange={(e) =>
+                handleSelectedChainSettingsChange({
+                  id: chain.id,
+                  envValues: e.target.value,
+                })
+              }
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 mb-6 mx-auto flex justify-center">
+        <NavigateButton href="/deploy-steps/01-code-provider" text="Back" />
+
+        <NavigateButton
+          href="/deploy-steps/03-preview"
+          text="Next"
+          disabled={selectedChains.length === 0}
+          primary
+        />
       </div>
     </DeployStepsLayout>
   );
