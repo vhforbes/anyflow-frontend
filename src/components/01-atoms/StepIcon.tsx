@@ -6,8 +6,6 @@ export const StepIcon = ({
 }: {
   status: StepStatus;
 }): ReactNode => {
-  console.log(status);
-
   return (
     <>
       {status === StepStatus.Current && (

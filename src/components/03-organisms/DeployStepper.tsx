@@ -117,7 +117,7 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
 
             ${step.status === "notCompleted" && i !== 0 ? "bg-white" : ""}
             
-            ${step.status === "current" && i !== 0 ? "bg-white" : ""}
+            ${step.status === "current" && i !== 0 ? "bg-primary" : ""}
 
             ${step.status === "completed" ? "bg-primary" : ""}
 

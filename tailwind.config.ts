@@ -9,17 +9,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
       colors: {
         "blue-0": "#0B0C0F",
         "blue-2": "#20222B",
         "blue-5": "#424656",
         "blue-6": "#5F6271",
         "blue-8": "#9E9FA8",
+        "blue-9": "#DCDDE0",
       },
     },
   },
@@ -45,6 +41,7 @@ const config: Config = {
           "--blue-6": "",
           "--blue-5": "",
           "--blue-8": "",
+          "--blue-9": "",
         },
       },
     ], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]

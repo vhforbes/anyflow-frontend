@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/select";
 
 export const Dropdown = ({
-  items,
+  items = [],
   handleChange,
   disabled = false,
 }: {
-  items: {
+  items?: {
     id: string;
     value: string;
   }[];
@@ -21,7 +21,7 @@ export const Dropdown = ({
   return (
     <Select onValueChange={(value) => handleChange(value)}>
       <SelectTrigger className="w-full border-[1px] border-blue-6 bg-blue-0">
-        <SelectValue placeholder={items[0].value} />
+        <SelectValue placeholder={items[0]?.value} />
       </SelectTrigger>
       <SelectContent className="bg-blue-0">
         {items.map((item) => (

@@ -1,10 +1,12 @@
 import { Repository } from "@/interfaces/RepositoriesInterface";
 import { useEffect, useRef, useState } from "react";
+import { Input } from "../ui/input";
+import { SelectContent, SelectItem } from "../ui/select";
 
 interface Props {
-  data?: {
+  items?: {
     id: any;
-    name: string;
+    value: string;
   }[];
   placeholder: string;
   className?: string;
@@ -14,13 +16,18 @@ interface Props {
 }
 
 const DynamicSearchBar: React.FC<Props> = ({
-  data = [],
+  items = [],
   placeholder,
   className,
   setOnClick,
   setOnChange,
   disabled = false,
 }) => {
+  /* 
+    Some todos
+    [] implement keyabord functionality (arrow up, down and enter)
+  */
+
   const elementRef = useRef<HTMLDivElement>(null);
   const TIME_ELAPSED = 1000;
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -51,29 +58,24 @@ const DynamicSearchBar: React.FC<Props> = ({
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, setOnChange]);
 
-  /* 
-    Some todos
-    [] implement keyabord functionality (arrow up, down and enter)
-    */
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredData = data.filter((data) =>
-    data.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = items.filter((item) =>
+    item.value.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSelection = (data: any) => {
-    // !!!! CLOSE WHEN CLICKING !!!!
-    setOnClick?.(data.id);
-    setSearchTerm(data.name);
+  const handleSelection = (item: any) => {
+    // !!!! NNED TO CLOSE WHEN CLICKING !!!!
+    setOnClick?.(item.id);
+    setSearchTerm(item.value);
   };
 
   return (
-    <div className="w-full" ref={elementRef}>
-      <input
-        className={`input input-bordered w-full ${className}`}
+    <div className="w-full relative" ref={elementRef}>
+      <Input
+        className={`input input-bordered w-full bg-blue-0 ${className}`}
         type="text"
         placeholder={placeholder}
         value={searchTerm}
@@ -81,15 +83,16 @@ const DynamicSearchBar: React.FC<Props> = ({
         onClick={() => setIsOpened(true)}
         disabled={disabled}
       />
+
       {filteredData.length > 0 && isOpened ? (
-        <ul className="p-2 absolute shadow menu dropdown-content z-[1] bg-base-100 rounded-md mt-2 max-w-xs text-base">
-          {filteredData.slice(0, 5).map((repository: Repository) => (
+        <ul className="p-2 absolute shadow z-[1] bg-blue-0 border-2 border-blue-8 rounded-md mt-2 text-base w-full max-h-96 overflow-auto">
+          {filteredData.map((item) => (
             <li
-              key={repository.id}
-              onClick={() => handleSelection(repository)}
-              className="hover:bg-base-200 p-2 cursor-pointer"
+              key={item.id}
+              onClick={() => handleSelection(item)}
+              className="hover:bg-primary p-2 cursor-pointer"
             >
-              {repository.name}
+              {item.value}
             </li>
           ))}
         </ul>

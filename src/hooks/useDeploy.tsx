@@ -48,8 +48,6 @@ const useDeploy = () => {
 
   useEffect(() => {
     // setDeployPayload(buildDeployPayload());
-    // console.log(codeProviderStep);
-    // console.log(deploySettingsStep);
   }, [codeProviderStep, deploySettingsStep]);
 
   useEffect(() => {
