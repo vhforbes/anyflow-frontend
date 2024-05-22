@@ -1,15 +1,14 @@
 "use client";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import useDeploy from "@/hooks/useDeploySettings";
-import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "@/icons/misc/ArrowsIcons";
 import { Chain } from "@/interfaces/ChainSettingsInterface";
 import { NavigateButton } from "@/components/01-atoms/NavigateButton";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { InputLabel } from "@/components/02-molecules/InputLabel";
 import { MultiSelectDropdown } from "@/components/02-molecules/MultiSelectDropdown";
 import { Checkbox } from "@/components/01-atoms/Checkbox";
-import { GlobeIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import GlobeIcon from "@/icons/misc/GlobeIcon";
 
 const DeploySettingsPage = () => {
   const {
@@ -101,89 +100,38 @@ const DeploySettingsPage = () => {
             className="textarea textarea-bordered w-full h-28 bg-blue-0 mt-2"
             placeholder="This environment variables will be replicated across all chains"
           />
-
-          {/* 
-          
-            IF THIS IS SELECTED WHEN USER ADD NEW CONTRACT IT WILL COME DEFAULT TRUE
-            IF NOT SELETEC THE DEFAULT WILL BE FALSE
-            
-            WHEN USER CLICKS AND NOT CHECKED WILL SELECT ALL CONTRACTS
-
-            OTHERWISE WILL CLEAR ALL VERIFYS
-
-          */}
-
-          {selectedChains.length > 0 ? (
-            <h2 className="text-xl font-bold text-center mt-4">
-              Chain specific Variables:
-            </h2>
-          ) : null}
-
-          <div className="flex flex-wrap justify-center">
-            {selectedChains.map((chain) => (
-              <div
-                tabIndex={chain.id}
-                key={chain.name}
-                className="collapse collapse-arrow bg-base-100 max-w-md h-fit mr-4 mt-4"
-              >
-                <input type="checkbox" value={chain.name} />
-                <div className="collapse-title text-xl font-medium">
-                  {chain.name}
-                </div>
-                <div className="collapse-content">
-                  <textarea
-                    className="textarea textarea-bordered w-full h-36"
-                    placeholder="ENV_NAME=VALUE"
-                    onChange={(e) =>
-                      handleSelectedChainSettingsChange({
-                        id: chain.id,
-                        envValues: e.target.value,
-                      })
-                    }
-                  />
-                  <div className="flex justify-center mt-4">
-                    <input
-                      type="checkbox"
-                      className="checkbox mr-2"
-                      checked={chain.verifyContracts}
-                      onChange={(e) =>
-                        handleSelectedChainSettingsChange({
-                          id: chain.id,
-                          verifyContracts: e.target.checked,
-                        })
-                      }
-                    />
-                    <p>Verify contracts source code</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
-      <div
-        className="flex flex-col items-start justify-between w-2/3 max-w-screen-lg mx-auto mt-8
+      {selectedChains.length > 0 ? (
+        <div
+          className="flex flex-col items-start justify-between w-2/3 max-w-screen-lg mx-auto mt-8
         border-[1px] rounded-lg border-warning-4 bg-blue-0 p-6"
-      >
-        <h1 className="text-xl font-bold">Chain settings</h1>
+        >
+          <h1 className="text-xl font-bold">Chain settings</h1>
 
-        {selectedChains.map((chain) => (
-          <div className="mt-8 w-full" key={chain.chain_id}>
-            <p>{chain.name} environment variables</p>
-            <textarea
-              className="textarea textarea-bordered w-full h-28 bg-blue-0 mt-2"
-              placeholder={`This environment variables will be replicated only across ${chain.name} `}
-              onChange={(e) =>
-                handleSelectedChainSettingsChange({
-                  id: chain.id,
-                  envValues: e.target.value,
-                })
-              }
-            />
-          </div>
-        ))}
-      </div>
+          {selectedChains.map((chain) => (
+            <div className="mt-8 w-full" key={chain.chain_id}>
+              <p className="flex items-center font-bold">
+                <Badge className="mr-2" variant="white">
+                  {chain.name}
+                </Badge>{" "}
+                {chain.name} environment variables
+              </p>
+              <textarea
+                className="textarea textarea-bordered w-full h-28 bg-blue-0 mt-2"
+                placeholder={`This environment variables will be replicated only across ${chain.name} `}
+                onChange={(e) =>
+                  handleSelectedChainSettingsChange({
+                    id: chain.id,
+                    envValues: e.target.value,
+                  })
+                }
+              />
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       <div className="mt-6 mb-6 mx-auto flex justify-center">
         <NavigateButton href="/deploy-steps/01-code-provider" text="Back" />

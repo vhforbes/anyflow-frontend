@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { X } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
 import { Item } from "@radix-ui/react-select";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Framework = Record<"value" | "label", string>;
 
@@ -75,42 +75,48 @@ export const MultiSelectDropdown = ({
   items?: Item[];
   handleSelection: (id: number) => void;
 }) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<Item[]>();
-  const [selectables, setSelactables] = React.useState<Item[]>();
-  const [inputValue, setInputValue] = React.useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<Item[]>();
+  const [selectables, setSelactables] = useState<Item[]>();
+  const [inputValue, setInputValue] = useState("");
 
-  const handleUnselect = React.useCallback((item: Item) => {
+  const handleUnselect = useCallback((item: Item) => {
     setSelected((prev) => prev?.filter((s) => s.value !== item.value));
   }, []);
 
-  const handleKeyDown = React.useCallback(
+  const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
-      const input = inputRef.current;
+      return;
 
-      if (input) {
-        if (e.key === "Delete" || e.key === "Backspace") {
-          if (input.value === "") {
-            setSelected((prev) => {
-              if (prev) {
-                const newSelected = [...prev];
-                newSelected.pop();
-                return newSelected;
-              }
-            });
-          }
-        }
-        // This is not a default behaviour of the <input /> field
-        if (e.key === "Escape") {
-          input.blur();
-        }
-      }
+      // Ripped off functionality of deleting with backspace
+      // (wasn't able to manage state via handleSelection(prop) with it)
+
+      // const input = inputRef.current;
+      // if (input) {
+      //   if (e.key === "Delete" || e.key === "Backspace") {
+      //     if (input.value === "") {
+      //       setSelected((prev) => {
+      //         if (prev) {
+      //           const newSelected = [...prev];
+      //           newSelected.pop();
+      //           return newSelected;
+      //         }
+      //       });
+      //     }
+      //   }
+      //   // This is not a default behaviour of the <input /> field
+      //   if (e.key === "Escape") {
+      //     input.blur();
+      //   }
+      // }
     },
     []
   );
 
-  React.useEffect(() => {
+  useEffect(() => {}, [selected]);
+
+  useEffect(() => {
     const selectables = items?.filter(
       (item) =>
         !selected?.some((selectedItem) => selectedItem.value === item.value)
@@ -144,8 +150,14 @@ export const MultiSelectDropdown = ({
                     e.stopPropagation();
                   }}
                   onClick={() => handleUnselect(item)}
+                ></button>
+                <button
+                  onClick={() => {
+                    handleSelection(parseInt(item.id));
+                    handleUnselect(item);
+                  }}
                 >
-                  {/* <X className="h-3 w-3 text-muted-foreground hover:text-foreground" /> */}
+                  X
                 </button>
               </Badge>
             );
@@ -172,6 +184,7 @@ export const MultiSelectDropdown = ({
               {selectables?.map((selectable) => {
                 return (
                   <CommandItem
+                    // onClick={() => handleSelection(parseInt(selectable.id))}
                     key={selectable.value}
                     onMouseDown={(e) => {
                       e.preventDefault();

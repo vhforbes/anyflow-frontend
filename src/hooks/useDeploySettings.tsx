@@ -37,11 +37,12 @@ const useDeploySettings = () => {
   };
 
   const handleChainSelection = (chain_id: number) => {
-    console.log(chain_id);
-
     const alreadySelected = selectedChains.find(
       (item) => item.chain_id === chain_id
     );
+
+    console.log("selected hook");
+    console.log(selectedChains);
 
     const selectedChainToAdd = chanisList?.filter(
       (chain) => chain.chain_id === chain_id
