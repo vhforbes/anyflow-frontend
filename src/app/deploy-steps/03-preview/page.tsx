@@ -49,9 +49,9 @@ const DeployPreviewPage = () => {
               Total cost preview:
             </span>
             <span className="font-bold mr-2">US$ 30.96</span>
-            {/* <Info>
+            <Info>
               <p>Estimated total gas cost</p>
-            </Info> */}
+            </Info>
           </div>
         </div>
 
@@ -79,9 +79,9 @@ const DeployPreviewPage = () => {
                 <th className="ml-4 text-left font-normal px-5 py-6 text-brand-6 w-1/3">
                   <div className="flex items-center">
                     <span className="mr-2">Global environment variables</span>
-                    {/* <Info>
+                    <Info>
                       <p>Variables that are defined for all chains</p>
-                    </Info> */}
+                    </Info>
                   </div>
                 </th>
                 <th className="ml-6 text-left py-6 font-medium">
@@ -95,11 +95,11 @@ const DeployPreviewPage = () => {
         <div className="mt-6 flex items-center">
           <p className=" text-xl font-bold mr-2">Selected chains </p>
 
-          {/* <Info>
+          <Info>
             {deploySettingsStep.selectedChains.map((chain) => (
               <p key={chain.name}>{chain.name}</p>
             ))}
-          </Info> */}
+          </Info>
         </div>
 
         {deploySettingsStep.selectedChains.map((chain) => (
