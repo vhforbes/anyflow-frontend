@@ -8,7 +8,7 @@ const DeployStepsLayout = ({
   currentStep: number;
 }) => {
   return (
-    <div className="flex flex-col items-center mx-auto w-full">
+    <div className="flex flex-col items-center mx-auto w-full h-full">
       heyy
       <div className="mx-auto">
         <DeployStepper currentStep={currentStep} />

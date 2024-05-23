@@ -34,4 +34,29 @@ export interface DeploymentDetails {
   log: string;
 }
 
-export interface Transaction {}
+export interface Transaction {
+  block_hash: string;
+  block_number: string;
+  chain_deployment_id: number;
+  chain_id: number;
+  contract_address: string;
+  contracts: Contract[];
+  cost_native: string;
+  cost_usd: number;
+  created_at: string;
+  effective_gas_price: string;
+  from: string;
+  gas_used: string;
+  hash: string;
+  id: number;
+  updated_at: string;
+}
+
+interface Contract {
+  address: string;
+  chain_id: number;
+  created_at: string;
+  id: number;
+  transaction_id: number;
+  updated_at: string;
+}

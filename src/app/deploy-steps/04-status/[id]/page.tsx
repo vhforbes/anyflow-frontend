@@ -6,8 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { useDeployStatus } from "@/hooks/useDeployStatus";
 import { useTimeElapsed } from "@/hooks/useTimeElapsed";
+import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
+import {
+  Deployment,
+  DeploymentDetails,
+} from "@/interfaces/DeploymentInterface";
 import dayjs from "dayjs";
-import { Globe } from "lucide-react";
+import { CircleAlert, CircleCheck, Globe } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -133,8 +138,12 @@ const DeployStatusPage = ({ params }: { params: { id: string } }) => {
               </div>
             }
             contentChildren={
-              <div className="flex flex-col relative">
-                {/* <ChainDetailsTable chain={chain} deployment={deployment} /> */}
+              <div className="flex flex-col relative bg-blue-0">
+                <ChainDetailsTable chain={chain} deployment={deployment} />
+                <p className="mb-2 font-bold">{chain.name} log</p>
+                <div className="border-[1px] rounded-md p-3 max-h-48 overflow-auto mb-4">
+                  {deployment.log}
+                </div>
               </div>
             }
           />
@@ -144,32 +153,80 @@ const DeployStatusPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-// const ChainDetailsTable = ({ chain, deployment }) => (
-//   <div className="bg-blue-0">
-//     <table className="w-full">
-//       <thead>
-//         <tr className="border-b text-blue-8 ">
-//           <th className="text-left p-2 font-medium text-xs">Transaction</th>
-//           <th className="text-left p-2 font-medium text-xs">Cost</th>
-//           <th className="text-left p-2 font-medium text-xs">Contract name</th>
-//           <th className="text-left p-2 font-medium text-xs">Verified</th>
-//           <th className="text-left p-2 font-medium text-xs">Address</th>
-//         </tr>
-//       </thead>
+const ChainDetailsTable = ({
+  chain,
+  deployment,
+}: {
+  chain: ChainWithSettings;
+  deployment: Deployment;
+}) => (
+  <div className="bg-blue-0 pb-3">
+    <table className="w-full mt-3">
+      <thead>
+        <tr className="border-b border-blue-8 text-blue-8">
+          <th className="text-left p-2 font-medium text-xs">Transaction</th>
+          <th className="text-left p-2 font-medium text-xs">Cost</th>
+          <th className="text-left p-2 font-medium text-xs">Contract name</th>
+          <th className="text-left p-2 font-medium text-xs">Verified</th>
+          <th className="text-left p-2 font-medium text-xs">Address</th>
+        </tr>
+      </thead>
 
-//       <tbody>
-//         {/* Each transaction will have one of these rows */}
-//         <tr className="border-b">
-//           <td className="p-2">transaction...data</td>
-//           <td className="p-2">2</td>
-//           <td className="p-2">3</td>
-//           <td className="p-2">4</td>
-//           <td className="p-2">5</td>
-//         </tr>
-//         {/* Add more rows as needed */}
-//       </tbody>
-//     </table>
-//   </div>
-// );
+      {deployment.chain_deployments.map((chainDeployment) => {
+        if (chainDeployment.chain_id === chain.chain_id) {
+          return chainDeployment.transactions.map((transaction) => (
+            <tbody key={transaction.hash} className="">
+              <tr className="border-b border-blue-8 mt-4">
+                <td className="py-4 max-w-xs pr-16 break-all">
+                  {transaction.hash}
+                </td>
+                <td className="p-2 py-4 ">
+                  <div className="flex items-center">
+                    <span className="mr-2">
+                      {transaction.cost_usd.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })}
+                    </span>
+                    <Info>
+                      <p>Estimated total gas cost</p>
+                    </Info>
+                  </div>
+                </td>
+                <td className="p-2 py-4">
+                  {transaction.contracts.map((contract) => (
+                    <p key={contract.id} className="">
+                      Name
+                    </p>
+                  ))}
+                </td>
+                <td className="p-2 py-4">
+                  {transaction.contracts.map((contract) => (
+                    // Not checking if is veryfied, need beckend
+                    <CircleCheck
+                      key={contract.id}
+                      className="stroke-success-4"
+                      width={13}
+                    />
+                    // <CircleAlert width={13} className="stroke-alert-4" />
+                  ))}
+                </td>
+                <td className="p-2 py-4">
+                  {transaction.contracts.map((contract) => (
+                    <p key={contract.id} className="">
+                      {contract.address}
+                    </p>
+                  ))}
+                </td>
+              </tr>
+            </tbody>
+          ));
+        }
+
+        return null;
+      })}
+    </table>
+  </div>
+);
 
 export default DeployStatusPage;

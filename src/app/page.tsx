@@ -3,7 +3,7 @@ import RocketIcon from "@/icons/fun/RocketIcon";
 
 export default function Home() {
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col justify-center items-center w-full h-full">
       <div className="flex">
         <RedirectSquare
           className="md:mr-6"
