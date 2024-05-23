@@ -1,47 +1,10 @@
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
+import api from "@/utils/axios";
 import { useEffect, useState } from "react";
-import {
-  arbitrumSepolia,
-  polygonAmoy,
-  auroraTestnet,
-  avalancheFuji,
-  baseSepolia,
-  bscTestnet,
-  fantomTestnet,
-  gnosisChiado,
-  klaytnBaobab,
-  mainnet,
-  optimismSepolia,
-  polygon,
-  polygonMumbai,
-  sepolia,
-  zkSyncSepoliaTestnet,
-  cronosTestnet,
-  moonbeamDev,
-} from "viem/chains";
-import { estimateContractTotalGas } from "viem/op-stack";
 
 const useDeploy = () => {
-  const [chanisList, setChainsList] = useState([
-    arbitrumSepolia,
-    polygonAmoy,
-    auroraTestnet,
-    avalancheFuji,
-    baseSepolia,
-    bscTestnet,
-    fantomTestnet,
-    gnosisChiado,
-    klaytnBaobab,
-    mainnet,
-    optimismSepolia,
-    polygon,
-    polygonMumbai,
-    sepolia,
-    zkSyncSepoliaTestnet,
-    cronosTestnet,
-    moonbeamDev,
-  ]);
+  const [chanisList, setChainsList] = useState<ChainWithSettings[]>();
 
   const [selectedChains, setSelectedChains] = useState(
     [] as ChainWithSettings[]
@@ -53,7 +16,20 @@ const useDeploy = () => {
 
   const { setDeploySettingsStep } = useDeployStepsContext();
 
+  const getAvailableChains = async () => {
+    try {
+      const { data: chainsResponse } = await api.get("/api/chains");
+
+      if (chainsResponse.data) {
+        console.log(chainsResponse.data);
+        setChainsList(chainsResponse.data);
+      }
+    } catch (error) {}
+  };
+
   const handleSelectAll = () => {
+    if (!chanisList) return;
+
     if (chanisList.length === selectedChains.length) {
       setSelectedChains([]);
     } else {
@@ -61,21 +37,29 @@ const useDeploy = () => {
     }
   };
 
-  const handleChainSelection = (id: number) => {
-    const alreadySelected = selectedChains.find((item) => item.id === id);
+  const handleChainSelection = (chain_id: number) => {
+    const alreadySelected = selectedChains.find(
+      (item) => item.chain_id === chain_id
+    );
 
-    const selectedChainToAdd = chanisList.filter(
-      (chain) => chain.id === id
+    const selectedChainToAdd = chanisList?.filter(
+      (chain) => chain.chain_id === chain_id
     )[0] as ChainWithSettings;
 
+    if (!selectedChainToAdd) return;
+
     selectedChainToAdd.verifyContracts = verifyAllChecked;
+
+    console.log(selectedChainToAdd);
 
     if (!alreadySelected && selectedChainToAdd) {
       setSelectedChains([...selectedChains, selectedChainToAdd]);
     }
 
     if (alreadySelected) {
-      setSelectedChains(selectedChains.filter((chain) => chain.id !== id));
+      setSelectedChains(
+        selectedChains.filter((chain) => chain.chain_id !== chain_id)
+      );
     }
   };
 
@@ -118,6 +102,10 @@ const useDeploy = () => {
       }))
     );
   };
+
+  useEffect(() => {
+    getAvailableChains();
+  }, []);
 
   useEffect(() => {
     const allVerifyChecked = selectedChains.filter(
