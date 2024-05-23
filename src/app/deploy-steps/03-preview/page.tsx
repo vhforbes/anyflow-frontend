@@ -49,9 +49,9 @@ const DeployPreviewPage = () => {
               Total cost preview:
             </span>
             <span className="font-bold mr-2">US$ 30.96</span>
-            <Info>
-              <p>Estimated cost</p>
-            </Info>
+            {/* <Info>
+              <p>Estimated total gas cost</p>
+            </Info> */}
           </div>
         </div>
 
@@ -79,9 +79,9 @@ const DeployPreviewPage = () => {
                 <th className="ml-4 text-left font-normal px-5 py-6 text-brand-6 w-1/3">
                   <div className="flex items-center">
                     <span className="mr-2">Global environment variables</span>
-                    <Info>
+                    {/* <Info>
                       <p>Variables that are defined for all chains</p>
-                    </Info>
+                    </Info> */}
                   </div>
                 </th>
                 <th className="ml-6 text-left py-6 font-medium">
@@ -92,7 +92,15 @@ const DeployPreviewPage = () => {
           </table>
         </div>
 
-        <p className="mt-6 text-xl font-bold">Selected chains</p>
+        <div className="mt-6 flex items-center">
+          <p className=" text-xl font-bold mr-2">Selected chains </p>
+
+          {/* <Info>
+            {deploySettingsStep.selectedChains.map((chain) => (
+              <p key={chain.name}>{chain.name}</p>
+            ))}
+          </Info> */}
+        </div>
 
         {deploySettingsStep.selectedChains.map((chain) => (
           <div key={chain.name} className="w-full">
@@ -110,7 +118,10 @@ const DeployPreviewPage = () => {
                     <th className="ml-4 text-left font-normal text-blue-8 px-5 py-6 w-1/3">
                       Estimated Cost
                     </th>
-                    <th className="ml-6 text-left py-6 font-medium">TBI</th>
+                    <th className="ml-6 text-left py-6 font-medium flex">
+                      <p className="mr-2">TBI</p>
+                      <Info>Estimated gas cost</Info>
+                    </th>
                   </tr>
                   <tr className="w-full border-b-[1px] border-blue-6">
                     <th className="ml-4 text-left font-normal text-blue-8 px-5 py-6 w-1/3">
@@ -135,19 +146,20 @@ const DeployPreviewPage = () => {
           </div>
         ))}
       </div>
+
       <div className="mt-6 mb-6 mx-auto flex justify-center">
         <NavigateButton href="/deploy-steps/02-deploy-settings">
           Back
         </NavigateButton>
 
-        <AlertDialogComponent onClick={() => deploy()}>
-          <NavigateButton className="btn-primary">
+        <NavigateButton className="btn-primary">
+          <AlertDialogComponent onClick={() => deploy()}>
             <div className="flex items-center">
               <RocketIcon width={17} strokeWidth={3} />
               <p className="font-bold ml-1">That`s it!</p>
             </div>
-          </NavigateButton>
-        </AlertDialogComponent>
+          </AlertDialogComponent>
+        </NavigateButton>
       </div>
     </DeployStepsLayout>
   );
