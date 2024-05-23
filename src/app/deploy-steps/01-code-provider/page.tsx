@@ -1,6 +1,6 @@
 "use client";
 import { Checkbox } from "@/components/01-atoms/Checkbox";
-import { Dropdown } from "@/components/01-atoms/Dropdown";
+import { Dropdown } from "@/components/02-molecules/Dropdown";
 // Would be good to use server here and componentize all that uses hooks?
 
 import DynamicSearchBar from "@/components/01-atoms/DynamicSearchBar";
