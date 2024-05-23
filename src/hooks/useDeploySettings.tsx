@@ -3,7 +3,7 @@ import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
 import api from "@/utils/axios";
 import { useEffect, useState } from "react";
 
-const useDeploy = () => {
+const useDeploySettings = () => {
   const [chanisList, setChainsList] = useState<ChainWithSettings[]>();
 
   const [selectedChains, setSelectedChains] = useState(
@@ -21,7 +21,6 @@ const useDeploy = () => {
       const { data: chainsResponse } = await api.get("/api/chains");
 
       if (chainsResponse.data) {
-        console.log(chainsResponse.data);
         setChainsList(chainsResponse.data);
       }
     } catch (error) {}
@@ -42,6 +41,9 @@ const useDeploy = () => {
       (item) => item.chain_id === chain_id
     );
 
+    console.log("selected hook");
+    console.log(selectedChains);
+
     const selectedChainToAdd = chanisList?.filter(
       (chain) => chain.chain_id === chain_id
     )[0] as ChainWithSettings;
@@ -49,8 +51,6 @@ const useDeploy = () => {
     if (!selectedChainToAdd) return;
 
     selectedChainToAdd.verifyContracts = verifyAllChecked;
-
-    console.log(selectedChainToAdd);
 
     if (!alreadySelected && selectedChainToAdd) {
       setSelectedChains([...selectedChains, selectedChainToAdd]);
@@ -147,4 +147,4 @@ const useDeploy = () => {
   };
 };
 
-export default useDeploy;
+export default useDeploySettings;

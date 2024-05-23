@@ -76,6 +76,11 @@ const useCodeProvider = () => {
         );
 
         setRepositories(repositoriesResponse);
+      } else if (selectedOrganization.id) {
+        const { data: repositoriesResponse } = await api.get(
+          `/api/organizations/${selectedOrganization.login}/repositories`
+        );
+        setRepositories(repositoriesResponse);
       }
 
       // Why am i not getting the repos from another org here ?
@@ -96,6 +101,7 @@ const useCodeProvider = () => {
       stopLoading();
       return repository;
     } catch (error) {
+      stopLoading();
       toast.error("Unable to fetch repository");
       console.error(error);
     }
@@ -194,8 +200,6 @@ const useCodeProvider = () => {
       !repositoryConfigs
     )
       return;
-
-    console.log("setCodeProviderStep");
 
     setCodeProviderStep({
       organization: {
