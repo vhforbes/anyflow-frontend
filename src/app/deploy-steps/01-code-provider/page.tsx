@@ -125,18 +125,17 @@ const CodeProviderPage = () => {
         </div>
       </div>
       <div className="mt-6 mb-6 mx-auto flex justify-center">
-        <NavigateButton
-          href="/deploy-steps/01-code-provider"
-          text="Back"
-          disabled
-        />
+        <NavigateButton href="/deploy-steps/01-code-provider" disabled>
+          Back
+        </NavigateButton>
 
         <NavigateButton
           href="/deploy-steps/02-deploy-settings"
-          text="Next"
           disabled={!isHardhat}
           primary
-        />
+        >
+          Next
+        </NavigateButton>
       </div>
     </DeployStepsLayout>
   );

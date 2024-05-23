@@ -9,6 +9,7 @@ import { MultiSelectDropdown } from "@/components/02-molecules/MultiSelectDropdo
 import { Checkbox } from "@/components/01-atoms/Checkbox";
 import { Badge } from "@/components/ui/badge";
 import GlobeIcon from "@/icons/misc/GlobeIcon";
+import { Info } from "@/components/01-atoms/Info";
 
 const DeploySettingsPage = () => {
   const {
@@ -37,7 +38,7 @@ const DeploySettingsPage = () => {
   return (
     <DeployStepsLayout currentStep={2}>
       <div
-        className="flex flex-col items-start justify-between w-2/3 max-w-screen-lg mx-auto
+        className="flex flex-col items-start justify-between md:w-2/3 max-w-screen-lg mx-auto
         border-[1px] rounded-lg border-blue-6 bg-blue-0 p-6"
       >
         <h1 className="text-2xl font-bold">Deployment settings</h1>
@@ -92,7 +93,9 @@ const DeploySettingsPage = () => {
               Global environment variables
             </h2>
             {/* Icon with modal here or hover */}
-            <span>i (tbi)</span>
+            <Info>
+              <p>Variables that are defined for all chains</p>
+            </Info>
           </div>
 
           <textarea
@@ -105,19 +108,19 @@ const DeploySettingsPage = () => {
 
       {selectedChains.length > 0 ? (
         <div
-          className="flex flex-col items-start justify-between w-2/3 max-w-screen-lg mx-auto mt-8
+          className="flex flex-col items-start justify-between md:w-2/3 max-w-screen-lg mx-auto mt-8
         border-[1px] rounded-lg border-warning-4 bg-blue-0 p-6"
         >
           <h1 className="text-xl font-bold">Chain settings</h1>
 
           {selectedChains.map((chain) => (
             <div className="mt-8 w-full" key={chain.chain_id}>
-              <p className="flex items-center font-bold">
+              <div className="flex items-center font-bold">
                 <Badge className="mr-2" variant="white">
                   {chain.name}
                 </Badge>{" "}
                 {chain.name} environment variables
-              </p>
+              </div>
               <textarea
                 className="textarea textarea-bordered w-full h-28 bg-blue-0 mt-2"
                 placeholder={`This environment variables will be replicated only across ${chain.name} `}
@@ -134,14 +137,17 @@ const DeploySettingsPage = () => {
       ) : null}
 
       <div className="mt-6 mb-6 mx-auto flex justify-center">
-        <NavigateButton href="/deploy-steps/01-code-provider" text="Back" />
+        <NavigateButton href="/deploy-steps/01-code-provider">
+          Back
+        </NavigateButton>
 
         <NavigateButton
           href="/deploy-steps/03-preview"
-          text="Next"
           disabled={selectedChains.length === 0}
           primary
-        />
+        >
+          Next
+        </NavigateButton>
       </div>
     </DeployStepsLayout>
   );

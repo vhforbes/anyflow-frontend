@@ -10,10 +10,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        "brand-6": "#E83664",
         "blue-0": "#0B0C0F",
         "blue-2": "#20222B",
         "blue-5": "#424656",
         "blue-6": "#5F6271",
+        "blue-7": "#7E818D",
         "blue-8": "#9E9FA8",
         "blue-9": "#DCDDE0",
         "random-2": "#63D3E3",
@@ -38,10 +40,12 @@ const config: Config = {
           success: "#19D6E5",
           warning: "#E2A400",
           error: "#FC632C",
+          "--brand-6": "",
           "--blue-0": "",
           "--blue-2": "",
-          "--blue-6": "",
           "--blue-5": "",
+          "--blue-6": "",
+          "--blue-7": "",
           "--blue-8": "",
           "--blue-9": "",
           "--random-2": "",
