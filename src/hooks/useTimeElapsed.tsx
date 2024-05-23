@@ -1,6 +1,5 @@
 "use client";
 
-import { Deployment } from "@/interfaces/DeploymentInterface";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
@@ -35,8 +34,8 @@ export const useTimeElapsed = ({
   }, [createdAt, finishedAt]);
 
   function millisToMinutesAndSeconds(millis: number) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = parseInt(((millis % 60000) / 1000).toFixed(0));
+    const minutes = Math.floor(millis / 60000);
+    const seconds = parseInt(((millis % 60000) / 1000).toFixed(0));
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
 

@@ -78,8 +78,6 @@ export const useDeploy = () => {
     setDeployPayload(buildDeployPayload());
   }, [codeProviderStep, deploySettingsStep]);
 
-  useEffect(() => {}, [deployPayload]);
-
   const deploy = async () => {
     // Check if user has a active deploy before deploying
     // if (currentDeploy) return;

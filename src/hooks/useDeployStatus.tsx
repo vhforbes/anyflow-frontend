@@ -1,7 +1,10 @@
+"use client";
+
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { Deployment } from "@/interfaces/DeploymentInterface";
 import api from "@/utils/axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const useDeployStatus = () => {
   const { deployStatusStep } = useDeployStepsContext();
@@ -17,6 +20,7 @@ export const useDeployStatus = () => {
 
       setDeployment(deploymentStatus);
     } catch (error) {
+      toast.error("Could not deploy");
       console.error(error);
     }
   };

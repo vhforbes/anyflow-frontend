@@ -1,19 +1,21 @@
 import Link from "next/link";
 
-export const NavigateButton = ({
-  onClick,
-  href,
-  text,
-  disabled,
-  primary = false,
-}: {
+interface NavigateButton {
   className?: string;
   onClick?: () => void;
   href?: string;
   text: string;
   disabled?: boolean;
   primary?: boolean;
-}) => {
+}
+
+export const NavigateButton = ({
+  onClick,
+  href,
+  text,
+  disabled,
+  primary = false,
+}: NavigateButton) => {
   return href && !disabled ? (
     <Link href={href} className="w-32 mr-3">
       <button
