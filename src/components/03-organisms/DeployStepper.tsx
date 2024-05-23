@@ -78,7 +78,7 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
 
         break;
 
-      case 3:
+      case 4:
         setSteps([
           {
             name: "Code Provider",
@@ -100,10 +100,32 @@ const DeployStepper = ({ currentStep }: { currentStep: number }) => {
 
         break;
 
+      case 5:
+        setSteps([
+          {
+            name: "Code Provider",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Settings",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Preview",
+            status: StepStatus.Completed,
+          },
+          {
+            name: "Deployment Status",
+            status: StepStatus.Completed,
+          },
+        ]);
+
+        break;
+
       default:
         break;
     }
-  }, []);
+  }, [currentStep]);
 
   if (!steps) return null;
 
