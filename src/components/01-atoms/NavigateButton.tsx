@@ -1,35 +1,34 @@
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 
-export const NavigateButton = ({
-  onClick,
-  href,
-  // text,
-  disabled,
-  primary = false,
-  children,
-}: {
+interface NavigateButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-  onClick?: () => void;
   href?: string;
-  // text: string;
-  disabled?: boolean;
-  primary?: boolean;
   children: React.ReactNode;
-}) => {
+}
+
+export const NavigateButton = ({
+  href,
+  disabled,
+  className,
+  children,
+  ...props
+}: NavigateButton) => {
   return href && !disabled ? (
-    <Link href={href} className="w-32 mr-3">
+    <Link href={href} className={cn("w-32 mr-3")}>
       <button
-        className={`btn ${primary ? "bg-brand-6" : "btn-secondary"} w-full`}
+        className={cn(`btn w-full`, className)}
         disabled={disabled}
+        {...props}
       >
         {children}
       </button>
     </Link>
   ) : (
     <button
-      className={`btn w-32 mr-3 ${primary ? "bg-brand-6" : "btn-secondary"}`}
-      onClick={onClick}
+      className={cn("btn w-32 mr-3", className)}
+      onClick={props.onClick}
       disabled={disabled}
     >
       {children}

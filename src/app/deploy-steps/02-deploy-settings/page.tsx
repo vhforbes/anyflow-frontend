@@ -144,7 +144,7 @@ const DeploySettingsPage = () => {
         <NavigateButton
           href="/deploy-steps/03-preview"
           disabled={selectedChains.length === 0}
-          primary
+          className="btn-primary"
         >
           Next
         </NavigateButton>

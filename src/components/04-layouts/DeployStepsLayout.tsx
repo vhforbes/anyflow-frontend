@@ -12,7 +12,7 @@ const DeployStepsLayout = ({
       <div className="mx-auto">
         <DeployStepper currentStep={currentStep} />
       </div>
-      <div className="mt-10 w-full">{children}</div>
+      <div className="mt-10 w-full h-fit">{children}</div>
     </div>
   );
 };

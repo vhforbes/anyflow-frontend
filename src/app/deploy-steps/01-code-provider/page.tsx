@@ -8,7 +8,6 @@ import { NavigateButton } from "@/components/01-atoms/NavigateButton";
 import { InputLabel } from "@/components/02-molecules/InputLabel";
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import useCodeProvider from "@/hooks/useCodeProvider";
-import Link from "next/link";
 import { useState } from "react";
 
 const CodeProviderPage = () => {
@@ -40,7 +39,9 @@ const CodeProviderPage = () => {
           <div className="w-full mr-6 md:w-1/2">
             <InputLabel label="Organization">
               <Dropdown
-                handleChange={(value) => handleRepositoryChange(value)}
+                handleChange={(value) =>
+                  handleOrganizationChange(parseInt(value))
+                }
                 items={organizations.map((organization) => {
                   return {
                     id: organization.id.toString(),
@@ -132,7 +133,7 @@ const CodeProviderPage = () => {
         <NavigateButton
           href="/deploy-steps/02-deploy-settings"
           disabled={!isHardhat}
-          primary
+          className="btn-primary"
         >
           Next
         </NavigateButton>

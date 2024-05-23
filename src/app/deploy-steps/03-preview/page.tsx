@@ -141,7 +141,7 @@ const DeployPreviewPage = () => {
         </NavigateButton>
 
         <AlertDialogComponent onClick={() => deploy()}>
-          <NavigateButton primary>
+          <NavigateButton className="btn-primary">
             <div className="flex items-center">
               <RocketIcon width={17} strokeWidth={3} />
               <p className="font-bold ml-1">That`s it!</p>

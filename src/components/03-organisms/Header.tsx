@@ -14,7 +14,7 @@ const HeaderComponent = ({ className }: { className?: string }) => {
 
   return (
     <div
-      className={`${className} bg-blue-0 h-[72px] px-10 shadow-primary border-b-[1px] border-[#475467]`}
+      className={`${className} relative bg-blue-0 px-10 py-4 shadow-primary border-b-[1px] border-[#475467]`}
     >
       <div className="flex items-center">
         <div className="md:mr-12 md:ml-28 flex items-center">
