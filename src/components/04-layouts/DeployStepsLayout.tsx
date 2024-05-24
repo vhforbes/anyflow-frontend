@@ -9,7 +9,6 @@ const DeployStepsLayout = ({
 }) => {
   return (
     <div className="flex flex-col items-center mx-auto w-full h-full">
-      heyy
       <div className="mx-auto">
         <DeployStepper currentStep={currentStep} />
       </div>
