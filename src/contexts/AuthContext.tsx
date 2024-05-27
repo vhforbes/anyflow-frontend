@@ -12,6 +12,7 @@ import {
 } from "react";
 
 type UserInfo = {
+  id: number;
   email: string;
   name: string;
 };
@@ -50,6 +51,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
       if (userData) {
         setUserInfo({
+          id: userData?.id,
           email: userData?.email,
           name: userData?.name,
         });

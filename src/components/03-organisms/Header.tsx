@@ -7,10 +7,21 @@ import AnyflowLogo from "../../icons/brand/AnyflowLogo";
 
 import BetaIcon from "../../icons/BetaIcon";
 import { LanguageSelector } from "../02-molecules/LanguageSelector";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useEffect } from "react";
 
 const HeaderComponent = ({ className }: { className?: string }) => {
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/deployments") {
+      console.log("The current URL is /deployments");
+    }
+  }, [pathname]);
+
+  const isSelected = "btn btn-neutral border-none bg-blue-2";
 
   return (
     <div
@@ -25,11 +36,21 @@ const HeaderComponent = ({ className }: { className?: string }) => {
         </div>
 
         <div>
-          <button className="btn btn-neutral border-none bg-blue-2 h-fit px-3 py-2 mr-1">
-            Start
+          <button
+            className={`${
+              pathname === "/" ? isSelected : `hover:bg-blue-2`
+            } h-fit px-3 py-2 mr-1 bg-none rounded-md`}
+          >
+            <Link href={"/"}>Start</Link>
           </button>
           {/* // Check wich page the user is and alter class accordingly */}
-          <button className="bg-none h-fit px-3 py-2">History</button>
+          <button
+            className={`${
+              pathname === "/deployments" ? isSelected : `hover:bg-blue-2`
+            } h-fit px-3 py-2 bg-none rounded-md`}
+          >
+            <Link href={"/deployments"}>History</Link>
+          </button>
         </div>
       </div>
 

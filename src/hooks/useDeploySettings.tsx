@@ -2,29 +2,17 @@ import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
 import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
 import api from "@/utils/axios";
 import { useEffect, useState } from "react";
+import { useChains } from "./useChains";
 
 const useDeploySettings = () => {
-  const [chanisList, setChainsList] = useState<ChainWithSettings[]>();
-
   const [selectedChains, setSelectedChains] = useState(
     [] as ChainWithSettings[]
   );
-
   const [globalEnvVariables, setGlobalEnvVariables] = useState("");
-
   const [verifyAllChecked, setVerifyAllChecked] = useState(false);
 
   const { setDeploySettingsStep } = useDeployStepsContext();
-
-  const getAvailableChains = async () => {
-    try {
-      const { data: chainsResponse } = await api.get("/api/chains");
-
-      if (chainsResponse.data) {
-        setChainsList(chainsResponse.data);
-      }
-    } catch (error) {}
-  };
+  const { chanisList } = useChains();
 
   const handleSelectAll = () => {
     if (!chanisList) return;
@@ -99,10 +87,6 @@ const useDeploySettings = () => {
       }))
     );
   };
-
-  useEffect(() => {
-    getAvailableChains();
-  }, []);
 
   useEffect(() => {
     const allVerifyChecked = selectedChains.filter(

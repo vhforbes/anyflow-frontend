@@ -24,7 +24,7 @@ const AuthPage = () => {
 
   // MAKE A CONDITINAL HERE TO NOT RENDER WHEN LOADING?
   return (
-    <div className="flex justify-center mt-10 w-full">
+    <div className="flex justify-center mt-10 w-full h-full">
       <div className="card flex flex-col items-center shadow-xl p-4">
         <AnyflowLogo className="w-16 h-16" />
         <p className="text-4xl font-bold mt-6">Welcome to Anyflow</p>

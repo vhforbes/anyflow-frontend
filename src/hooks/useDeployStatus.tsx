@@ -4,7 +4,6 @@ import api from "@/utils/axios";
 import { useEffect, useState } from "react";
 
 export const useDeployStatus = () => {
-  // const { deployStatusStep } = useDeployStepsContext();
   const [deployment, setDeployment] = useState<Deployment>();
 
   const getGeneralDeployment = async (id: number) => {
@@ -13,6 +12,7 @@ export const useDeployStatus = () => {
         `/api/deployments/${id}`
       );
 
+      console.log(deploymentStatus);
       setDeployment(deploymentStatus);
     } catch (error) {
       console.error(error);

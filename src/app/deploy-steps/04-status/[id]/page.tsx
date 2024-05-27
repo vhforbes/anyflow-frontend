@@ -4,10 +4,12 @@ import { CollapsibleComponent } from "@/components/03-organisms/CollapsableCompo
 import DeployStepsLayout from "@/components/04-layouts/DeployStepsLayout";
 import { Badge } from "@/components/ui/badge";
 import { useDeployStepsContext } from "@/contexts/DeployStepsContext";
+import { useChains } from "@/hooks/useChains";
 import { useDeployStatus } from "@/hooks/useDeployStatus";
 import { useTimeElapsed } from "@/hooks/useTimeElapsed";
 import { ChainWithSettings } from "@/interfaces/ChainSettingsInterface";
 import {
+  ChainDeployment,
   Deployment,
   DeploymentDetails,
 } from "@/interfaces/DeploymentInterface";
@@ -19,6 +21,7 @@ import { useEffect, useState } from "react";
 const DeployStatusPage = ({ params }: { params: { id: string } }) => {
   const { deployment, getGeneralDeployment } = useDeployStatus();
   const { deploySettingsStep } = useDeployStepsContext();
+  const { chanisList } = useChains();
 
   const { timeElapsed } = useTimeElapsed({
     createdAt: deployment?.created_at,
@@ -32,6 +35,22 @@ const DeployStatusPage = ({ params }: { params: { id: string } }) => {
   }, [timeElapsed]);
 
   if (!deployment) return null;
+
+  const getChainName = ({
+    chainId,
+    chains,
+  }: {
+    chainId: number;
+    chains: ChainWithSettings[];
+  }) => {
+    const selectedChain = chains.find((chain) => chain.chain_id === chainId);
+
+    if (!selectedChain) {
+      return "";
+    }
+
+    return selectedChain?.name;
+  };
 
   return (
     <DeployStepsLayout currentStep={5}>
@@ -55,11 +74,18 @@ const DeployStatusPage = ({ params }: { params: { id: string } }) => {
                     <span className="mr-2">Chains</span>
                   </div>
                 </th>
-                <th className="ml-6 text-left py-6 font-medium">
-                  {deploySettingsStep?.selectedChains.map((chain) => (
-                    <Badge key={chain.name} className="mr-2" variant="white">
-                      {chain.name}
-                    </Badge>
+                <th className="text-left py-6 font-medium flex">
+                  {deployment.chain_deployments?.map((selectedChain) => (
+                    <div className="flex" key={selectedChain.chain_id}>
+                      <Badge className="mr-2" variant="white">
+                        {chanisList
+                          ? getChainName({
+                              chainId: selectedChain.chain_id,
+                              chains: chanisList,
+                            })
+                          : null}
+                      </Badge>
+                    </div>
                   ))}
                 </th>
               </tr>
@@ -127,20 +153,38 @@ const DeployStatusPage = ({ params }: { params: { id: string } }) => {
           <p className="md:mr-36">Status</p>
         </div>
 
-        {deploySettingsStep?.selectedChains.map((chain) => (
+        {deployment.chain_deployments.map((selectedChain) => (
           <CollapsibleComponent
-            key={chain.id}
+            key={selectedChain.id}
             className="bg-blue-2 w-full border-[1px] border-blue-0"
             headerChildren={
               <div className="w-full h-20 flex items-center justify-between border-blue-0">
-                <Badge variant={"white"}>{chain.name}</Badge>
+                <Badge variant={"white"}>
+                  {chanisList
+                    ? getChainName({
+                        chainId: selectedChain.chain_id,
+                        chains: chanisList,
+                      })
+                    : null}
+                </Badge>
                 <p>{deployment.status}</p>
               </div>
             }
             contentChildren={
               <div className="flex flex-col relative bg-blue-0">
-                <ChainDetailsTable chain={chain} deployment={deployment} />
-                <p className="mb-2 font-bold">{chain.name} log</p>
+                <ChainDetailsTable
+                  chain={selectedChain}
+                  deployment={deployment}
+                />
+                <p className="mb-2 font-bold">
+                  {chanisList
+                    ? getChainName({
+                        chainId: selectedChain.chain_id,
+                        chains: chanisList,
+                      })
+                    : null}{" "}
+                  log
+                </p>
                 <div className="border-[1px] rounded-md p-3 max-h-48 overflow-auto mb-4">
                   {deployment.log}
                 </div>
@@ -157,7 +201,7 @@ const ChainDetailsTable = ({
   chain,
   deployment,
 }: {
-  chain: ChainWithSettings;
+  chain: ChainDeployment;
   deployment: Deployment;
 }) => (
   <div className="bg-blue-0 pb-3">
