@@ -1,8 +1,9 @@
 "use client";
-import { Info } from "@/components/01-atoms/Info";
 import { useAuthContext } from "@/contexts/AuthContext";
 import api from "@/utils/axios";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import useLoader from "./useLoader";
 
 interface Link {
   url: string | null;
@@ -44,28 +45,41 @@ interface Deployment {
 
 export const useDeployments = () => {
   const { userInfo } = useAuthContext();
+  const { startLoading, stopLoading } = useLoader();
+
   const [deployments, setDeployments] = useState<Deployment[]>();
   const [currentPage, setCurrentPage] = useState(1);
-  const [hasPrevious, setHasPrevious] = useState();
+  const [lastPage, setLastPage] = useState<number>();
 
   const getUserDeployments = async () => {
-    const queryParams = {
-      page: currentPage,
-    };
+    try {
+      const queryParams = {
+        page: currentPage,
+      };
 
-    const { data: deploymentsResponse }: { data: PaginatedDeployments } =
-      await api.get(`api/user/${userInfo?.id}/deployments`, {
-        params: queryParams,
-      });
+      startLoading();
 
-    setDeployments(deploymentsResponse.data);
+      const { data: deploymentsResponse }: { data: PaginatedDeployments } =
+        await api.get(`api/user/${userInfo?.id}/deployments`, {
+          params: queryParams,
+        });
+
+      setCurrentPage(deploymentsResponse.current_page);
+      setLastPage(deploymentsResponse.last_page);
+      setDeployments(deploymentsResponse.data);
+      stopLoading();
+    } catch (error) {
+      stopLoading();
+      toast.error("Could not get deployments");
+      console.error(error);
+    }
   };
 
   useEffect(() => {
     if (userInfo) {
       getUserDeployments();
     }
-  }, [userInfo]);
+  }, [userInfo, currentPage]);
 
-  return { deployments };
+  return { deployments, currentPage, setCurrentPage, lastPage };
 };
