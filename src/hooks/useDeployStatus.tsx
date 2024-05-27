@@ -12,7 +12,6 @@ export const useDeployStatus = () => {
         `/api/deployments/${id}`
       );
 
-      console.log(deploymentStatus);
       setDeployment(deploymentStatus);
     } catch (error) {
       console.error(error);

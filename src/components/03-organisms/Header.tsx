@@ -1,7 +1,5 @@
 "use client";
 
-import { useAuthContext } from "@/contexts/AuthContext";
-import { useAuth } from "@/hooks/useAuth";
 import AnyflowFull from "../../icons/brand/AnyflowFull";
 import AnyflowLogo from "../../icons/brand/AnyflowLogo";
 
@@ -9,17 +7,10 @@ import BetaIcon from "../../icons/BetaIcon";
 import { LanguageSelector } from "../02-molecules/LanguageSelector";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { useEffect } from "react";
 
 const HeaderComponent = ({ className }: { className?: string }) => {
   const router = useRouter();
   const pathname = usePathname();
-
-  useEffect(() => {
-    if (pathname === "/deployments") {
-      console.log("The current URL is /deployments");
-    }
-  }, [pathname]);
 
   const isSelected = "btn btn-neutral border-none bg-blue-2";
 
