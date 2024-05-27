@@ -21,10 +21,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* Google Analytics Script */}
+
       <body className={RedHatDisplay.className}>
         <App>
           <Layout>{children}</Layout>
         </App>
+
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-SKK0VDXDSR"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-SKK0VDXDSR');
+            `,
+          }}
+        />
       </body>
     </html>
   );
